@@ -1,0 +1,38 @@
+# Datos personales: perfil, reportes de balanza, exportaciones de Takeout.
+# El repo se publica → todo esto queda local. Ver docs/decisiones/0006.
+privado/
+*.zip
+takeout*/
+Takeout*/
+
+# Credenciales (NUNCA subir al repo)
+.env
+.env.local
+.env.*.local
+credentials.json
+client_secret*.json
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+tsconfig.tsbuildinfo
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Claude Code
+# CLAUDE.md SÍ se versiona: es el contexto del repo para el agente.
+.claude/
+
+# Términos que la publicación del espejo público bloquea: nombrarlos en el
+# repo sería publicarlos.
+.publicar-prohibidos
