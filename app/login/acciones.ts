@@ -13,8 +13,7 @@ const DEMORA_FALLO_MS = 800;
 
 export async function iniciarSesion(_: EstadoLogin, formData: FormData): Promise<EstadoLogin> {
   const clave = formData.get("clave");
-  const hash = process.env.APP_PASSWORD_HASH;
-  const secreto = process.env.SESSION_SECRET;
+  const hash = process.env.APP_PASSWORD_HASH;  const secreto = process.env.SESSION_SECRET;
 
   if (!hash || !secreto) {
     return { error: "La app no tiene la contraseña configurada en el servidor." };

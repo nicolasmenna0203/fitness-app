@@ -31,7 +31,9 @@ Vercel cada pedido puede caer en una instancia distinta.
 ## Decisión
 
 - **Solo contraseña** (sin usuario), guardada como hash scrypt en
-  `APP_PASSWORD_HASH` (N=16384, r=8, p=1, 32 bytes, sal de 16 bytes). Se
+  `APP_PASSWORD_HASH` con formato `scrypt.<sal>.<hash>` (N=16384, r=8, p=1,
+  32 bytes, sal de 16 bytes). El separador es `.` y no `$`: Next expande
+  `$NOMBRE` en los archivos `.env` y truncaba el hash. Se
   genera con `scripts/crear-clave.mjs`, que la pide sin mostrarla y exige 12
   caracteres o más.
 - **Sesión:** cookie `sesion` = `<payload base64url>.<HMAC-SHA256>` con

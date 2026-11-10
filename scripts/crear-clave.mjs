@@ -9,7 +9,7 @@
  *
  * Uso (en tu terminal, no hace falta nada instalado): node scripts/crear-clave.mjs
  *
- * Mismo formato que lib/clave.ts: scrypt$<sal>$<hash>, N=16384 r=8 p=1, 32 bytes.
+ * Mismo formato que lib/clave.ts: scrypt.<sal>.<hash>, N=16384 r=8 p=1, 32 bytes.
  */
 import { randomBytes, scryptSync } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -65,7 +65,7 @@ if (clave !== repetida) {
 const sal = randomBytes(16);
 const hash = scryptSync(clave, sal, 32, { N: 16384, r: 8, p: 1 });
 const valores = {
-  APP_PASSWORD_HASH: `scrypt$${sal.toString("base64url")}$${hash.toString("base64url")}`,
+  APP_PASSWORD_HASH: `scrypt.${sal.toString("base64url")}.${hash.toString("base64url")}`,
   SESSION_SECRET: randomBytes(32).toString("base64url"),
 };
 actualizarEnv(valores);
