@@ -5,7 +5,7 @@ entrenos, nutrición simple, composición corporal y datos de una pulsera Fitbit
 UI inspirada en el ecosistema de Apple. Stack previsto: Next.js en Vercel,
 Postgres en Neon, datos de la pulsera vía Google Health API (ADR 0002, 0007).
 Estado: base de la app hecha (navegación y pantalla Hoy con datos sintéticos
-de `lib/demo/`); faltan base de datos, login y sincronización.
+de `lib/demo/`) y login; faltan base de datos y sincronización.
 
 **Next.js 16 tiene cambios grandes respecto de versiones anteriores** (Cache
 Components activado, `LayoutProps`/`PageProps` globales, etc.): antes de usar
