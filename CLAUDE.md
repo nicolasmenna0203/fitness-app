@@ -4,8 +4,13 @@ App web personal (celular + escritorio, instalable) para un gimnasio en casa:
 entrenos, nutrición simple, composición corporal y datos de una pulsera Fitbit.
 UI inspirada en el ecosistema de Apple. Stack previsto: Next.js en Vercel,
 Postgres en Neon, datos de la pulsera vía Google Health API (ADR 0002, 0007).
-Estado: planificación, sin código de la app todavía. Se avanza por etapas: relevamiento → datos → secciones → sistema de
-diseño → wireframes → mockups → código.
+Estado: base de la app hecha (navegación y pantalla Hoy con datos sintéticos
+de `lib/demo/`); faltan base de datos, login y sincronización.
+
+**Next.js 16 tiene cambios grandes respecto de versiones anteriores** (Cache
+Components activado, `LayoutProps`/`PageProps` globales, etc.): antes de usar
+una API, leé la guía en `node_modules/next/dist/docs/` (ver AGENTS.md).
+Comandos: `npm run dev`, `npm run build`, `npm run lint`, `npm run typecheck`.
 
 ## El código se publica
 
@@ -47,6 +52,14 @@ ADR antes de cerrar el tema.
 
 ## Entorno
 
-El repo vive en una carpeta sincronizada por OneDrive. Si se usa Next.js, el
-cache de webpack en disco se corrompe por la sincronización: usar cache en
-memoria en desarrollo.
+El repo vive en una carpeta sincronizada por OneDrive, que bloquea y renombra
+archivos mientras sincroniza. Si aparecen errores `ENOENT` o módulos faltantes
+dentro de `.next/`, es OneDrive, no el código: pausar la sincronización o
+borrar `.next/` y reintentar.
+
+## Sistema visual
+
+Los colores son variables CSS en `app/globals.css`, documentadas en
+[docs/producto/sistema-visual.md](docs/producto/sistema-visual.md). Calorías,
+proteína y entreno están validados para daltonismo: no los cambies sin volver
+a validar. El texto nunca va en el color de una serie.

@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/*
+ * Sistema visual (mockups: docs/producto/sistema-visual.md).
+ * Los colores de calorías, proteína y entreno están validados para daltonismo
+ * y contraste en claro y oscuro: no cambiarlos sin volver a validar.
+ */
+:root {
+  --bg: #f2f2f7;
+  --side: #ebebef;
+  --card: #ffffff;
+  --ink: #1c1c1e;
+  --ink2: #6c6c70;
+  --sep: #e5e5ea;
+  --grid: #ededf0;
+  --track: #ececf0;
+  --fill: #f2f2f7;
+  --sel: #dcdce2;
+  --accent: #e8590c;
+  --on-accent: #111111;
+  --move: #e8590c;
+  --prot: #1c7ed6;
+  --kcal: #2f9e44;
+  --sleep: #6741d9;
+  --warn: #b35c00;
+  --warnbg: #fff4e5;
+  --good: #2b8a3e;
+  --goodbg: #ebf7ee;
+  --link: #0b63ce;
+  --bar: rgb(249 249 251 / 0.92);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --side: #1a1a1c;
+    --card: #1c1c1e;
+    --ink: #f5f5f7;
+    --ink2: #a1a1a6;
+    --sep: #38383a;
+    --grid: #2a2a2c;
+    --track: #2c2c2e;
+    --fill: #2c2c2e;
+    --sel: #323236;
+    --accent: #ee6316;
+    --on-accent: #111111;
+    --move: #ee6316;
+    --prot: #339af0;
+    --kcal: #2fa84a;
+    --sleep: #9775fa;
+    --warn: #ffa94d;
+    --warnbg: #33240f;
+    --good: #51cf66;
+    --goodbg: #14301b;
+    --link: #4da3ff;
+    --bar: rgb(22 22 24 / 0.92);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-side: var(--side);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-sep: var(--sep);
+  --color-grid: var(--grid);
+  --color-track: var(--track);
+  --color-fill: var(--fill);
+  --color-sel: var(--sel);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-move: var(--move);
+  --color-prot: var(--prot);
+  --color-kcal: var(--kcal);
+  --color-sleep: var(--sleep);
+  --color-warn: var(--warn);
+  --color-warnbg: var(--warnbg);
+  --color-good: var(--good);
+  --color-goodbg: var(--goodbg);
+  --color-link: var(--link);
+  --color-bar: var(--bar);
+  --font-sans: -apple-system, BlinkMacSystemFont, var(--font-inter), system-ui, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}

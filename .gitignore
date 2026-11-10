@@ -12,12 +12,18 @@ Takeout*/
 credentials.json
 client_secret*.json
 
-# Node
+# Node / Next.js
 node_modules/
 .next/
 out/
 dist/
-tsconfig.tsbuildinfo
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+npm-debug.log*
+*.pem
 
 # IDEs
 .vscode/
