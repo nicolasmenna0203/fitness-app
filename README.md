@@ -84,7 +84,8 @@ scripts/          prueba de la Google Health API
 - [ ] Base de datos, modelo de datos y login
 - [ ] Sincronización con Google Health
 - [ ] Entrenar, Comer, Progreso y Datos
-- [ ] Despliegue en Vercel y demo pública
+- [x] Primer despliegue en Vercel, con datos sintéticos
+- [ ] Demo pública para el portfolio
 
 ## Privacidad
 
