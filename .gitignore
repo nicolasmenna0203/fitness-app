@@ -42,3 +42,8 @@ desktop.ini
 # Términos que la publicación del espejo público bloquea: nombrarlos en el
 # repo sería publicarlos.
 .publicar-prohibidos
+
+# Vercel CLI (vercel link)
+.vercel
+.env*
+!.env.example
