@@ -10,7 +10,10 @@ de `lib/demo/`); faltan base de datos, login y sincronización.
 **Next.js 16 tiene cambios grandes respecto de versiones anteriores** (Cache
 Components activado, `LayoutProps`/`PageProps` globales, etc.): antes de usar
 una API, leé la guía en `node_modules/next/dist/docs/` (ver AGENTS.md).
-Comandos: `npm run dev`, `npm run build`, `npm run lint`, `npm run typecheck`.
+Comandos: `npm run dev`, `npm run build`, `npm run lint`, `npm run typecheck`, `npm test`.
+
+**Toda la app está detrás del login** (`proxy.ts`, ADR 0008). Una ruta nueva
+queda protegida sola; si tiene que ser pública, se agrega explícitamente.
 
 ## El código se publica
 
