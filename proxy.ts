@@ -9,6 +9,8 @@ import { SESION_COOKIE, verificarToken } from "@/lib/sesion";
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   if (pathname === "/login") return NextResponse.next();
+  // El cron de Vercel no tiene cookie: la ruta se autentica sola con CRON_SECRET.
+  if (pathname.startsWith("/api/cron/")) return NextResponse.next();
 
   if (verificarToken(req.cookies.get(SESION_COOKIE)?.value, process.env.SESSION_SECRET)) {
     return NextResponse.next();

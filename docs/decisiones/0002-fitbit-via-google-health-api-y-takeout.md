@@ -3,7 +3,7 @@ numero: 0002
 titulo: Fitbit vía Google Health API como app personal sin verificar; Takeout para historial
 estado: Propuesta
 fecha: 2026-11-10
-codigo: scripts/probar-google-health.mjs
+codigo: lib/google/, app/api/google/, app/api/cron/sync/route.ts, scripts/probar-google-health.mjs
 ---
 
 # 0002 — Fitbit vía Google Health API como app personal sin verificar; Takeout para historial

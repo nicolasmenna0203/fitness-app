@@ -41,7 +41,9 @@ Detalle en [docs/producto/](docs/producto/).
 - **Next.js 16** (App Router, Cache Components, Turbopack) + **React 19** + **TypeScript**
 - **Tailwind CSS 4** con los tokens del [sistema visual](docs/producto/sistema-visual.md)
 - Web app instalable (manifiesto e íconos generados por Next)
-- Previsto: Postgres en Neon, Vercel Blob y Google Health API ([ADR 0007](docs/decisiones/0007-despliegue-en-vercel-con-neon.md))
+- **Postgres en Neon** con **Drizzle ORM**, base y funciones en São Paulo ([ADR 0009](docs/decisiones/0009-drizzle-y-neon-en-sao-paulo.md))
+- **Google Health API** para los datos de la pulsera, con sincronización al abrir la app y cron diario ([ADR 0002](docs/decisiones/0002-fitbit-via-google-health-api-y-takeout.md))
+- Previsto: Vercel Blob para fotos y capturas de la balanza
 
 ## Desarrollo local
 
@@ -51,7 +53,11 @@ npm run dev        # http://localhost:3000
 npm run build      # compilación de producción
 npm run lint && npm run typecheck && npm test
 node scripts/crear-clave.mjs   # contraseña de la app → .env.local
+npm run db:generate            # migración a partir de db/schema.ts
+npm run db:migrate             # aplicarla en Neon
 ```
+
+Variables de entorno: ver [.env.example](.env.example).
 
 ```
 app/(app)/        secciones con la navegación común (Hoy, Entrenar, Comer, Progreso, Datos)
@@ -59,7 +65,11 @@ components/       navegación, tarjetas de Hoy, íconos y piezas de UI
 lib/demo/         datos sintéticos (los de la demo pública)
 lib/formato.ts    números y duraciones en formato es-AR
 lib/sesion.ts     sesión firmada; lib/clave.ts: hash de la contraseña
-proxy.ts          exige sesión en toda la app salvo /login e íconos
+lib/google/       cliente de la Google Health API, conversión a filas y sincronización
+lib/datos/        lecturas de la base para las pantallas
+db/               esquema de Drizzle y migraciones
+app/api/          OAuth de Google y cron de sincronización
+proxy.ts          exige sesión en toda la app salvo /login, íconos y el cron
 types/            tipos compartidos
 scripts/          prueba de la Google Health API
 ```
@@ -71,6 +81,7 @@ scripts/          prueba de la Google Health API
 - [Fuentes de datos](docs/producto/datos.md)
 - [Equipamiento](docs/producto/equipamiento.md)
 - [Sistema visual](docs/producto/sistema-visual.md)
+- [Modelo de datos](docs/producto/modelo-de-datos.md)
 - [Decisiones técnicas (ADRs)](docs/decisiones/README.md)
 - [Guía: configurar la Google Health API](docs/guias/google-health-api.md)
 
@@ -85,8 +96,8 @@ scripts/          prueba de la Google Health API
 - [x] Sistema visual y mockups (celular y escritorio)
 - [x] Base de la app: navegación y pantalla Hoy con datos sintéticos
 - [x] Login de un solo usuario ([ADR 0008](docs/decisiones/0008-login-de-un-solo-usuario.md))
-- [ ] Base de datos y modelo de datos
-- [ ] Sincronización con Google Health
+- [x] Base de datos en Neon ([modelo de datos](docs/producto/modelo-de-datos.md))
+- [x] Sincronización con Google Health: pasos, calorías, FC en reposo, sueño y ejercicios
 - [ ] Entrenar, Comer, Progreso y Datos
 - [x] Primer despliegue en Vercel, con datos sintéticos
 - [ ] Demo pública para el portfolio

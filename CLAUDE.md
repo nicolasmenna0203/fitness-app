@@ -4,8 +4,15 @@ App web personal (celular + escritorio, instalable) para un gimnasio en casa:
 entrenos, nutrición simple, composición corporal y datos de una pulsera Fitbit.
 UI inspirada en el ecosistema de Apple. Stack previsto: Next.js en Vercel,
 Postgres en Neon, datos de la pulsera vía Google Health API (ADR 0002, 0007).
-Estado: base de la app hecha (navegación y pantalla Hoy con datos sintéticos
-de `lib/demo/`) y login; faltan base de datos y sincronización.
+Estado: navegación, login, base en Neon y sincronización con Google Health.
+En Hoy, sueño y FC en reposo son reales; entreno, comidas y peso siguen con
+datos sintéticos de `lib/demo/` hasta construir esas secciones.
+
+**Base de datos (ADR 0009):** Drizzle sobre Neon por HTTP; esquema en
+`db/schema.ts`, migraciones con `npm run db:generate` y `npm run db:migrate`.
+**Local y producción usan la misma base:** probar en local escribe datos reales.
+Lecturas de la base para las pantallas en `lib/datos/`, siempre dentro de un
+`<Suspense>` y con `await connection()` (Cache Components).
 
 **Next.js 16 tiene cambios grandes respecto de versiones anteriores** (Cache
 Components activado, `LayoutProps`/`PageProps` globales, etc.): antes de usar

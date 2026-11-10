@@ -1,18 +1,33 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Anillos } from "@/components/hoy/Anillos";
 import { ProximoEntreno } from "@/components/hoy/ProximoEntreno";
-import { FcReposo, MetaPeso, Sueno } from "@/components/hoy/Tarjetas";
+import { SincronizarAlAbrir } from "@/components/hoy/SincronizarAlAbrir";
+import { FcReposo, MetaPeso, RecuperacionCargando, Sueno } from "@/components/hoy/Tarjetas";
 import { Encabezado, Etiqueta, Tarjeta } from "@/components/ui";
+import { recuperacionDeHoy } from "@/lib/datos/recuperacion";
 import { resumenHoyDemo } from "@/lib/demo/hoy";
 
 export const metadata: Metadata = { title: "Hoy" };
 
+/** Sueño y FC en reposo reales, de la pulsera. Se leen en cada visita. */
+async function Recuperacion() {
+  const r = await recuperacionDeHoy();
+  return (
+    <>
+      <Sueno r={r} />
+      <FcReposo r={r} />
+    </>
+  );
+}
+
 export default function HoyPage() {
-  // Hasta que exista la base de datos (ADR 0007), la pantalla usa datos sintéticos.
+  // Entreno, comidas y peso siguen con datos sintéticos hasta tener esas secciones.
   const hoy = resumenHoyDemo();
 
   return (
     <>
+      <SincronizarAlAbrir />
       <Encabezado fecha={hoy.fecha} titulo="Hoy" />
       <div className="grid gap-3 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,0.9fr)]">
         <div className="md:row-span-2 xl:row-span-1">
@@ -32,8 +47,9 @@ export default function HoyPage() {
         </Tarjeta>
 
         <div className="flex gap-3 md:gap-4 xl:flex-col">
-          <Sueno r={hoy.recuperacion} />
-          <FcReposo r={hoy.recuperacion} />
+          <Suspense fallback={<RecuperacionCargando />}>
+            <Recuperacion />
+          </Suspense>
         </div>
 
         <div className="md:col-span-2 xl:col-span-3">

@@ -1,3 +1,5 @@
+import type { EstadoRecuperacion } from "@/lib/recuperacion";
+
 export type Ejercicio = {
   nombre: string;
   equipo: string;
@@ -15,11 +17,12 @@ export type ProximoEntreno = {
   sugerenciaLiviana: string | null;
 };
 
+/** null en un campo = la pulsera todavía no tiene ese dato. */
 export type Recuperacion = {
-  estado: "buena" | "media" | "baja";
-  suenoMin: number;
-  fcReposo: number;
-  fcReposoVsPromedio: number;
+  estado: EstadoRecuperacion | null;
+  suenoMin: number | null;
+  fcReposo: number | null;
+  fcReposoVsPromedio: number | null;
   variabilidadMs: number | null;
 };
 
