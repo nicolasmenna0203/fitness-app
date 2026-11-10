@@ -48,7 +48,8 @@ Detalle en [docs/producto/](docs/producto/).
 
 - [x] Relevamiento: objetivos, equipamiento, dispositivos, alcance
 - [x] Fuentes de datos: Fitbit vía Google, balanza por captura
-- [ ] Prueba real de la Google Health API ([script](scripts/probar-google-health.mjs))
+- [x] Prueba real de la Google Health API ([script](scripts/probar-google-health.mjs)): acceso sin verificación confirmado
+- [ ] Confirmar que la sesión sigue viva pasados 7 días
 - [ ] Secciones y flujos principales
 - [ ] Sistema de diseño (tipografía, color, componentes, modo oscuro)
 - [ ] Wireframes (celular y escritorio)

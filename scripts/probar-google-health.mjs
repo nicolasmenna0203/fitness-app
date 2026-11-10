@@ -210,17 +210,23 @@ async function api(token, ruta, params) {
   return { ok: r.ok, status: r.status, json };
 }
 
-async function listarTodo(token, tipo, filtro, pageSize) {
+// El tamaño de página por defecto varía según el tipo (heart-rate devuelve 50), así
+// que se pide explícito. Máximo documentado: 10000; sleep y exercise: 25.
+const PAGINA = 10000;
+const MAX_PAGINAS = 100;
+
+async function listarTodo(token, tipo, filtro, pageSize = PAGINA) {
   const puntos = [];
   let pageToken;
-  for (let i = 0; i < 20; i++) {
-    const params = { filter: filtro, ...(pageSize && { pageSize }), ...(pageToken && { pageToken }) };
+  for (let i = 0; i < MAX_PAGINAS; i++) {
+    const params = { filter: filtro, pageSize, ...(pageToken && { pageToken }) };
     const r = await api(token, `/dataTypes/${tipo}/dataPoints`, params);
     if (!r.ok) return r;
     puntos.push(...(r.json.dataPoints ?? []));
     pageToken = r.json.nextPageToken;
     if (!pageToken) break;
   }
+  if (pageToken) console.log(`  (${tipo}: cortado en ${MAX_PAGINAS} páginas, hay más datos)`);
   return { ok: true, status: 200, json: { dataPoints: puntos } };
 }
 
