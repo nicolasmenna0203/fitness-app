@@ -4,7 +4,8 @@
 
 La API web de Fitbit se dio de baja en noviembre de 2026. Su reemplazo es la
 **Google Health API** (`health.googleapis.com/v4`), con OAuth de Google. Cubre
-todos los dispositivos Fitbit. Detalle de la estrategia en
+todos los dispositivos Fitbit y no publica precios. Configuración paso a paso en
+[la guía](../guias/google-health-api.md). Detalle de la estrategia en
 [ADR 0002](../decisiones/0002-fitbit-via-google-health-api-y-takeout.md).
 
 Datos que interesan:

@@ -19,7 +19,7 @@ de calorías: buscá el ADR acá. Ver [PLANTILLA.md](PLANTILLA.md) para el flujo
 
 | # | Decisión | Estado |
 |---|---|---|
-| [0002](0002-fitbit-via-google-health-api-y-takeout.md) | Fitbit vía Google Health API en modo personal; Takeout para historial | Propuesta |
+| [0002](0002-fitbit-via-google-health-api-y-takeout.md) | Fitbit vía Google Health API como app personal sin verificar; Takeout para historial | Propuesta |
 | [0003](0003-reporte-de-balanza-por-captura.md) | Reporte de la balanza cargado por captura, con extracción automática | Propuesta |
 
 ## Entrenamiento y nutrición

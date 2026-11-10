@@ -42,11 +42,13 @@ Detalle en [docs/producto/](docs/producto/).
 - [Fuentes de datos](docs/producto/datos.md)
 - [Equipamiento](docs/producto/equipamiento.md)
 - [Decisiones técnicas (ADRs)](docs/decisiones/README.md)
+- [Guía: configurar la Google Health API](docs/guias/google-health-api.md)
 
 ## Hoja de ruta
 
 - [x] Relevamiento: objetivos, equipamiento, dispositivos, alcance
 - [x] Fuentes de datos: Fitbit vía Google, balanza por captura
+- [ ] Prueba real de la Google Health API ([script](scripts/probar-google-health.mjs))
 - [ ] Secciones y flujos principales
 - [ ] Sistema de diseño (tipografía, color, componentes, modo oscuro)
 - [ ] Wireframes (celular y escritorio)
