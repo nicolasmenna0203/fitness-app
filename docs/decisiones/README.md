@@ -6,13 +6,14 @@ con las alternativas que se evaluaron y descartaron, y los límites que arrastra
 Antes de cambiar una fuente de datos, un criterio de entrenamiento o la lógica
 de calorías: buscá el ADR acá. Ver [PLANTILLA.md](PLANTILLA.md) para el flujo.
 
-**Próximo número: 0007**
+**Próximo número: 0008**
 
 ## Plataforma y repo
 
 | # | Decisión | Estado |
 |---|---|---|
 | [0001](0001-web-app-instalable-primero.md) | Web app instalable primero; app nativa solo si hace falta Apple Health | Propuesta |
+| [0007](0007-despliegue-en-vercel-con-neon.md) | Desplegar en Vercel con Next.js y Postgres en Neon | Propuesta |
 | [0006](0006-repo-privado-y-espejo-publico.md) | Repo privado como fuente de verdad y espejo público sin datos personales | Aceptada |
 
 ## Datos

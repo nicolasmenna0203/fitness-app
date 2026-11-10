@@ -51,10 +51,11 @@ Detalle en [docs/producto/](docs/producto/).
 - [x] Prueba real de la Google Health API ([script](scripts/probar-google-health.mjs)): acceso sin verificación confirmado
 - [ ] Confirmar que la sesión sigue viva pasados 7 días
 - [ ] Secciones y flujos principales
+- [x] Despliegue: Next.js en Vercel, Postgres en Neon ([ADR 0007](docs/decisiones/0007-despliegue-en-vercel-con-neon.md))
 - [ ] Sistema de diseño (tipografía, color, componentes, modo oscuro)
 - [ ] Wireframes (celular y escritorio)
 - [ ] Mockups
-- [ ] Stack y arquitectura
+- [ ] Arquitectura y modelo de datos
 - [ ] Primera versión funcional
 
 ## Privacidad

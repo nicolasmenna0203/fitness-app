@@ -2,8 +2,9 @@
 
 App web personal (celular + escritorio, instalable) para un gimnasio en casa:
 entrenos, nutrición simple, composición corporal y datos de una pulsera Fitbit.
-UI inspirada en el ecosistema de Apple. Estado: planificación, sin código
-todavía. Se avanza por etapas: relevamiento → datos → secciones → sistema de
+UI inspirada en el ecosistema de Apple. Stack previsto: Next.js en Vercel,
+Postgres en Neon, datos de la pulsera vía Google Health API (ADR 0002, 0007).
+Estado: planificación, sin código de la app todavía. Se avanza por etapas: relevamiento → datos → secciones → sistema de
 diseño → wireframes → mockups → código.
 
 ## El código se publica
