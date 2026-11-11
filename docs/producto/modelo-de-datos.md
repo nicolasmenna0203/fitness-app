@@ -24,10 +24,22 @@ agregan a medida que se construye cada sección.
 - **Día civil:** los datos se agrupan por la fecha local que informa Google, no
   por la fecha del servidor.
 
+## Entrenamiento
+
+| Tabla | Qué guarda | Clave |
+|---|---|---|
+| `ejercicios` | Catálogo: equipo, grupo, tipo de carga (pila, mancuerna, corporal, tiempo), rango de repeticiones, salto de carga y tope del equipo | `id`; `slug` único |
+| `plantillas` | Entrenos de la rotación (A, B…) con su orden | `id`; `orden` único |
+| `plantilla_ejercicios` | Ejercicios de cada plantilla: orden, series y descanso | (`plantilla_id`, `orden`) |
+| `entrenos` | Cada sesión: plantilla, fecha, inicio y fin, si fue liviana, estado (en curso, terminado, descartado) | `id` |
+| `series` | Cada serie hecha: kg (null sin carga externa) y repeticiones o segundos | `id`; única por (entreno, ejercicio, número) |
+
+- La progresión mira solo entrenos **terminados**: uno descartado no cuenta.
+- Terminar un entreno sin ninguna serie lo descarta.
+- La rotación inicial se carga con `npm run db:semilla` (idempotente).
+
 ## Próximas tablas
 
-- Entrenos: catálogo de ejercicios y equipamiento, plantillas de la rotación,
-  entrenos y series.
 - Nutrición: comidas frecuentes y registro diario.
 - Cuerpo: pesajes, reportes de la balanza y fotos.
 - Metas: peso objetivo, fecha y ajustes semanales de calorías.

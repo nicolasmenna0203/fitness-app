@@ -55,6 +55,7 @@ npm run lint && npm run typecheck && npm test
 node scripts/crear-clave.mjs   # contraseña de la app → .env.local
 npm run db:generate            # migración a partir de db/schema.ts
 npm run db:migrate             # aplicarla en Neon
+npm run db:semilla             # catálogo de ejercicios y rotación inicial
 ```
 
 Variables de entorno: ver [.env.example](.env.example).
@@ -67,6 +68,8 @@ lib/formato.ts    números y duraciones en formato es-AR
 lib/sesion.ts     sesión firmada; lib/clave.ts: hash de la contraseña
 lib/google/       cliente de la Google Health API, conversión a filas y sincronización
 lib/datos/        lecturas de la base para las pantallas
+lib/entrenos/     progresión de carga, rotación y versión liviana (funciones puras)
+app/(foco)/       pantallas sin navegación: el entreno en curso
 db/               esquema de Drizzle y migraciones
 app/api/          OAuth de Google y cron de sincronización
 proxy.ts          exige sesión en toda la app salvo /login, íconos y el cron
@@ -98,7 +101,8 @@ scripts/          prueba de la Google Health API
 - [x] Login de un solo usuario ([ADR 0008](docs/decisiones/0008-login-de-un-solo-usuario.md))
 - [x] Base de datos en Neon ([modelo de datos](docs/producto/modelo-de-datos.md))
 - [x] Sincronización con Google Health: pasos, calorías, FC en reposo, sueño y ejercicios
-- [ ] Entrenar, Comer, Progreso y Datos
+- [x] Entrenar: rotación A/B, registro de series, progresión de carga e historial ([ADR 0004](docs/decisiones/0004-entrenos-por-rotacion-sin-calendario.md))
+- [ ] Comer, Progreso y Datos (balanza, equipamiento, metas)
 - [x] Primer despliegue en Vercel, con datos sintéticos
 - [ ] Demo pública para el portfolio
 

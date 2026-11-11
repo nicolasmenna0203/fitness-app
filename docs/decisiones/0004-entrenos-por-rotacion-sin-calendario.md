@@ -1,9 +1,9 @@
 ---
 numero: 0004
 titulo: Entrenos por rotación, sin calendario fijo
-estado: Propuesta
+estado: Aceptada
 fecha: 2026-11-10
-codigo: —
+codigo: lib/entrenos/progresion.ts, lib/datos/entrenos.ts, app/acciones/entrenos.ts, components/entrenar/, scripts/semilla-entrenos.mjs
 ---
 
 # 0004 — Entrenos por rotación, sin calendario fijo
@@ -40,6 +40,23 @@ El equipamiento tiene topes: la pila de la multigym es de 45 kg.
 - **Tope de equipamiento:** cuando un ejercicio llega a la carga máxima del
   equipo, se sugiere una variante más difícil (unilateral, más repeticiones,
   tempo, pausa).
+
+### Cómo quedó implementado
+
+- **Rotación inicial:** "Cuerpo completo A" y "B", 6 ejercicios de 3 series
+  cada uno, cargados por `scripts/semilla-entrenos.mjs`. Las piernas van sobre
+  todo con mancuernas; la multigym, para empuje, tirón y accesorios.
+- **Saltos de carga (supuestos, a ajustar con el equipo real):** 5 kg en la
+  pila de la multigym, con tope de 45 kg; 2 kg por mano en mancuernas, sin tope.
+  Por tiempo (plancha) se suman 5 s por sesión.
+- **Precarga de cada serie:** el peso de la serie anterior de hoy (o el
+  sugerido) y como objetivo una repetición más que la misma serie de la última
+  sesión, dentro del rango. Confirmar es un toque.
+- **Primera vez de un ejercicio:** no se inventa un peso; se pide elegirlo.
+- **Versión liviana:** se sugiere si ayer hubo una actividad de 40 min o más
+  que no sea caminar, yoga o elongación, o si la recuperación está baja.
+- **Meta semanal:** 3 entrenos en los últimos 7 días (ventana móvil, no semana
+  calendario).
 
 ## Consecuencias y límites
 

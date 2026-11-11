@@ -26,6 +26,7 @@
   --warnbg: #fff4e5;
   --good: #2b8a3e;
   --goodbg: #ebf7ee;
+  --hl: #fff1e8;
   --link: #0b63ce;
   --bar: rgb(249 249 251 / 0.92);
   color-scheme: light;
@@ -53,6 +54,7 @@
     --warnbg: #33240f;
     --good: #51cf66;
     --goodbg: #14301b;
+    --hl: #3a2416;
     --link: #4da3ff;
     --bar: rgb(22 22 24 / 0.92);
     color-scheme: dark;
@@ -80,6 +82,7 @@
   --color-warnbg: var(--warnbg);
   --color-good: var(--good);
   --color-goodbg: var(--goodbg);
+  --color-hl: var(--hl);
   --color-link: var(--link);
   --color-bar: var(--bar);
   --font-sans: -apple-system, BlinkMacSystemFont, var(--font-inter), system-ui, sans-serif;

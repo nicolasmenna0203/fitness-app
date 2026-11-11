@@ -6,17 +6,20 @@
  */
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   check,
   date,
   index,
   integer,
   jsonb,
   pgTable,
+  primaryKey,
   real,
   serial,
   smallint,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
 
 const actualizado = () => timestamp({ withTimezone: true }).notNull().defaultNow();
@@ -87,4 +90,97 @@ export const actividades = pgTable(
     actualizado: actualizado(),
   },
   (t) => [index("actividades_fecha_idx").on(t.fecha)],
+);
+
+// ─── Entrenamiento (ADR 0004) ────────────────────────────────────────────────
+
+/**
+ * Cómo se carga un ejercicio, que define cómo progresa:
+ *  - pila: peso de la pila de la multigym (saltos fijos, con tope)
+ *  - mancuerna: kg por mano
+ *  - corporal: sin carga externa; progresa por repeticiones
+ *  - tiempo: segundos en vez de repeticiones (plancha)
+ */
+export const TIPOS_CARGA = ["pila", "mancuerna", "corporal", "tiempo"] as const;
+export type TipoCarga = (typeof TIPOS_CARGA)[number];
+
+/** Catálogo de ejercicios con el equipamiento de casa. */
+export const ejercicios = pgTable("ejercicios", {
+  id: serial().primaryKey(),
+  slug: text().notNull().unique(),
+  nombre: text().notNull(),
+  equipo: text().notNull(),
+  grupo: text().notNull(),
+  tipoCarga: text({ enum: TIPOS_CARGA }).notNull(),
+  /** Rango objetivo: repeticiones, o segundos si tipoCarga = tiempo. */
+  repsMin: smallint().notNull(),
+  repsMax: smallint().notNull(),
+  /** Salto de carga al progresar (kg; por mano en mancuernas). */
+  incrementoKg: real(),
+  /** Tope del equipo (la pila de la multigym); null = sin tope conocido. */
+  cargaMaxKg: real(),
+  /** "por lado" en ejercicios unilaterales. */
+  nota: text(),
+});
+
+/** Entrenos de la rotación (A, B…): se hacen en orden, sin días fijos. */
+export const plantillas = pgTable("plantillas", {
+  id: serial().primaryKey(),
+  nombre: text().notNull(),
+  orden: smallint().notNull().unique(),
+  activa: boolean().notNull().default(true),
+});
+
+export const plantillaEjercicios = pgTable(
+  "plantilla_ejercicios",
+  {
+    plantillaId: integer()
+      .notNull()
+      .references(() => plantillas.id, { onDelete: "cascade" }),
+    orden: smallint().notNull(),
+    ejercicioId: integer()
+      .notNull()
+      .references(() => ejercicios.id),
+    series: smallint().notNull(),
+    descansoSeg: smallint().notNull().default(90),
+  },
+  (t) => [primaryKey({ columns: [t.plantillaId, t.orden] })],
+);
+
+export const ESTADOS_ENTRENO = ["en_curso", "terminado", "descartado"] as const;
+
+export const entrenos = pgTable(
+  "entrenos",
+  {
+    id: serial().primaryKey(),
+    plantillaId: integer()
+      .notNull()
+      .references(() => plantillas.id),
+    fecha: date().notNull(),
+    inicio: timestamp({ withTimezone: true }).notNull().defaultNow(),
+    fin: timestamp({ withTimezone: true }),
+    liviana: boolean().notNull().default(false),
+    estado: text({ enum: ESTADOS_ENTRENO }).notNull().default("en_curso"),
+  },
+  (t) => [index("entrenos_fecha_idx").on(t.fecha)],
+);
+
+export const series = pgTable(
+  "series",
+  {
+    id: serial().primaryKey(),
+    entrenoId: integer()
+      .notNull()
+      .references(() => entrenos.id, { onDelete: "cascade" }),
+    ejercicioId: integer()
+      .notNull()
+      .references(() => ejercicios.id),
+    numero: smallint().notNull(),
+    /** null en ejercicios sin carga externa. */
+    kg: real(),
+    /** Repeticiones, o segundos si el ejercicio es por tiempo. */
+    reps: smallint().notNull(),
+    hechaEn: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [unique("series_unica").on(t.entrenoId, t.ejercicioId, t.numero), index("series_ejercicio_idx").on(t.ejercicioId)],
 );

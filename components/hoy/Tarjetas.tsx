@@ -2,7 +2,7 @@ import { IconAlerta, IconCheck, IconLuna, IconPulso } from "@/components/icons";
 import { Etiqueta, Tarjeta } from "@/components/ui";
 import { fmtDelta, fmtDuracion, fmtKg } from "@/lib/formato";
 import type { EstadoRecuperacion } from "@/lib/recuperacion";
-import type { Recuperacion, ResumenHoy } from "@/types/hoy";
+import type { Recuperacion, ResumenHoyDemo } from "@/types/hoy";
 
 const ESTADO: Record<EstadoRecuperacion, { texto: string; color: string; Icono: typeof IconAlerta }> = {
   buena: { texto: "Recuperación buena", color: "var(--good)", Icono: IconCheck },
@@ -70,7 +70,7 @@ export function RecuperacionCargando() {
   );
 }
 
-export function MetaPeso({ peso }: { peso: ResumenHoy["peso"] }) {
+export function MetaPeso({ peso }: { peso: ResumenHoyDemo["peso"] }) {
   const avance = Math.max(0, Math.min(1, (peso.tendencia - peso.inicio) / (peso.meta - peso.inicio)));
   const enRitmo = peso.ritmoSemanal >= peso.ritmoObjetivo * 0.8;
   return (

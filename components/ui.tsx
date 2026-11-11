@@ -24,7 +24,7 @@ export function Etiqueta({ children, className = "" }: { children: ReactNode; cl
   );
 }
 
-export function Encabezado({ fecha, titulo, accion }: { fecha?: string; titulo: string; accion?: ReactNode }) {
+export function Encabezado({ fecha, titulo, accion }: { fecha?: ReactNode; titulo: string; accion?: ReactNode }) {
   return (
     <header className="mb-3 flex flex-wrap items-end justify-between gap-4 px-1 md:mb-5 md:px-0">
       <div>
