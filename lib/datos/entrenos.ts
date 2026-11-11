@@ -53,6 +53,7 @@ async function planDe(plantillaId: number, excluirEntreno?: number): Promise<Eje
       repsMax: ejercicios.repsMax,
       incrementoKg: ejercicios.incrementoKg,
       cargaMaxKg: ejercicios.cargaMaxKg,
+      kgGuia: ejercicios.kgGuia,
       series: plantillaEjercicios.series,
       descansoSeg: plantillaEjercicios.descansoSeg,
     })
@@ -191,4 +192,41 @@ export async function historial(dias = 14): Promise<ItemHistorial[]> {
   return items
     .sort((a, b) => b.orden - a.orden)
     .map((i) => ({ clave: i.clave, fecha: i.fecha, titulo: i.titulo, detalle: i.detalle, esEntreno: i.esEntreno }));
+}
+
+export type EjercicioCatalogoConUso = {
+  id: number;
+  nombre: string;
+  equipo: string;
+  grupo: string;
+  tipoCarga: EjercicioPlan["tipoCarga"];
+  repsMin: number;
+  repsMax: number;
+  kgGuia: number | null;
+  /** Último peso usado en un entreno terminado; null si nunca se hizo o no lleva carga. */
+  ultimoKg: number | null;
+};
+
+/** Ejercicios de la rotación activa con el peso guía y el último usado (pantalla Datos). */
+export async function catalogoConUso(): Promise<EjercicioCatalogoConUso[]> {
+  await connection();
+  const filas = await db()
+    .selectDistinct({
+      id: ejercicios.id,
+      nombre: ejercicios.nombre,
+      equipo: ejercicios.equipo,
+      grupo: ejercicios.grupo,
+      tipoCarga: ejercicios.tipoCarga,
+      repsMin: ejercicios.repsMin,
+      repsMax: ejercicios.repsMax,
+      kgGuia: ejercicios.kgGuia,
+    })
+    .from(ejercicios)
+    .innerJoin(plantillaEjercicios, eq(plantillaEjercicios.ejercicioId, ejercicios.id))
+    .innerJoin(plantillas, and(eq(plantillas.id, plantillaEjercicios.plantillaId), eq(plantillas.activa, true)));
+  const ultimas = await ultimasSeries(filas.map((f) => f.id));
+  const orden = ["piernas", "empuje", "tirón", "core"];
+  return filas
+    .map((f) => ({ ...f, ultimoKg: ultimas.get(f.id)?.find((s) => s.kg !== null)?.kg ?? null }))
+    .sort((a, b) => orden.indexOf(a.grupo) - orden.indexOf(b.grupo) || a.nombre.localeCompare(b.nombre));
 }

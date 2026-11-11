@@ -13,6 +13,8 @@ export type ConfigEjercicio = {
   repsMax: number;
   incrementoKg: number | null;
   cargaMaxKg: number | null;
+  /** Peso orientativo para la primera vez; null = a elegir. */
+  kgGuia?: number | null;
 };
 
 export type SerieHecha = { numero: number; kg: number | null; reps: number };
@@ -48,11 +50,17 @@ export function sugerir(ej: ConfigEjercicio, ultima: SerieHecha[], cantidad: num
   const unidad = ej.tipoCarga === "tiempo" ? "s" : "";
 
   if (ultima.length === 0) {
+    const guia = conCarga(ej.tipoCarga) ? (ej.kgGuia ?? null) : null;
+    const porMano = ej.tipoCarga === "mancuerna" ? " por mano" : "";
     return {
-      kg: null,
+      kg: guia,
       repsPorSerie: repetir(ej.repsMin),
       motivo: "primera",
-      mensaje: conCarga(ej.tipoCarga) ? "Primera vez: elegí un peso con el que llegues a " + ej.repsMin + " repeticiones con buena técnica." : null,
+      mensaje: !conCarga(ej.tipoCarga)
+        ? null
+        : guia !== null
+          ? `Primera vez: arrancá con unos ${fmtCarga(guia)} kg${porMano}, como guía. Si las ${ej.repsMin} repeticiones salen fáciles, subí; si cuesta la técnica, bajá.`
+          : `Primera vez: elegí un peso con el que llegues a ${ej.repsMin} repeticiones con buena técnica.`,
     };
   }
 
@@ -74,7 +82,7 @@ export function sugerir(ej: ConfigEjercicio, ultima: SerieHecha[], cantidad: num
         mensaje:
           ej.tipoCarga === "tiempo"
             ? `Llegaste a ${ej.repsMax}${unidad}: pasá a una variante más difícil.`
-            : "Completaste el máximo: sumá lastre o una variante más difícil.",
+            : "Completaste el máximo: pasá a una variante más difícil (más lenta, con pausa arriba).",
       };
     }
     return { kg: null, repsPorSerie: progresar, motivo: "mantener", mensaje: null };

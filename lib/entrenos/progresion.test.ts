@@ -15,6 +15,12 @@ describe("progresión doble", () => {
     expect(s.mensaje).toMatch(/elegí un peso/);
   });
 
+  it("primera vez con peso guía: lo precarga como punto de partida", () => {
+    const s = sugerir({ ...mancuerna, kgGuia: 10 }, [], 3);
+    expect(s).toMatchObject({ kg: 10, repsPorSerie: [8, 8, 8], motivo: "primera" });
+    expect(s.mensaje).toMatch(/unos 10 kg por mano, como guía/);
+  });
+
   it("si no completó el rango, mantiene el peso y apunta a una repetición más por serie", () => {
     const s = sugerir(mancuerna, sets(14, 12, 10, 9), 3);
     expect(s).toMatchObject({ kg: 14, repsPorSerie: [12, 11, 10], motivo: "mantener", mensaje: null });
@@ -44,9 +50,9 @@ describe("progresión doble", () => {
     expect(sugerir(mancuerna, sets(14, 10, 9), 3).repsPorSerie).toEqual([11, 10, 10]);
   });
 
-  it("peso corporal progresa por repeticiones y al tope sugiere lastre", () => {
+  it("peso corporal progresa por repeticiones y al tope sugiere una variante", () => {
     expect(sugerir(corporal, sets(null, 6, 5, 4), 3)).toMatchObject({ kg: null, repsPorSerie: [7, 6, 5], motivo: "mantener" });
-    expect(sugerir(corporal, sets(null, 8, 8, 8), 3).mensaje).toMatch(/lastre/);
+    expect(sugerir(corporal, sets(null, 8, 8, 8), 3).mensaje).toMatch(/variante más difícil/);
   });
 
   it("por tiempo suma 5 s sin pasar el máximo", () => {

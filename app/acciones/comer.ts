@@ -60,3 +60,15 @@ export async function ocultarFrecuente(id: number): Promise<void> {
   await db().update(comidasFrecuentes).set({ activa: false }).where(eq(comidasFrecuentes.id, id));
   refresh();
 }
+
+/** Corrige las calorías o la proteína de una comida frecuente (no cambia los registros ya hechos). */
+export async function editarFrecuente(id: number, _: Resultado | null, formData: FormData): Promise<Resultado> {
+  const nombre = texto(formData.get("nombre"));
+  const kcal = numero(formData.get("kcal"));
+  const proteina = numero(formData.get("proteina")) ?? 0;
+  const error = !nombre ? "Falta el nombre." : validar(kcal, proteina);
+  if (error) return { ok: false, error };
+  await db().update(comidasFrecuentes).set({ nombre, kcal: Math.round(kcal!), proteinaG: proteina }).where(eq(comidasFrecuentes.id, id));
+  refresh();
+  return { ok: true };
+}

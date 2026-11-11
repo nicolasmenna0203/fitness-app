@@ -119,6 +119,8 @@ export const ejercicios = pgTable("ejercicios", {
   incrementoKg: real(),
   /** Tope del equipo (la pila de la multigym); null = sin tope conocido. */
   cargaMaxKg: real(),
+  /** Peso orientativo para la primera vez (guía, no regla; por mano en mancuernas). */
+  kgGuia: real(),
   /** "por lado" en ejercicios unilaterales. */
   nota: text(),
 });

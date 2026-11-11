@@ -12,7 +12,8 @@ export function textoCarga(e: EjercicioPlan): string {
   if (e.tipoCarga === "corporal") return "peso corporal";
   if (e.tipoCarga === "tiempo") return "—";
   if (e.sugerencia.kg === null) return "a elegir";
-  return `${fmtCarga(e.sugerencia.kg)} kg${e.tipoCarga === "mancuerna" ? " c/u" : ""}`;
+  const aprox = e.sugerencia.motivo === "primera" ? "~" : "";
+  return `${aprox}${fmtCarga(e.sugerencia.kg)} kg${e.tipoCarga === "mancuerna" ? " c/u" : ""}`;
 }
 
 export function textoSeries(e: EjercicioPlan, liviana: boolean): string {

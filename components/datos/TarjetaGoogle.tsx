@@ -23,7 +23,7 @@ export async function TarjetaGoogle() {
     .where(eq(conexionGoogle.id, 1));
 
   return (
-    <Tarjeta etiqueta="Google Health" className="flex max-w-xl flex-col gap-3">
+    <Tarjeta etiqueta="Google Health" className="flex flex-col gap-3">
       <Etiqueta>Pulsera · Google Health</Etiqueta>
       {!c ? (
         <>

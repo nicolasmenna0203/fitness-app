@@ -13,6 +13,7 @@ export type EjercicioPlan = {
   repsMax: number;
   incrementoKg: number | null;
   cargaMaxKg: number | null;
+  kgGuia: number | null;
   /** Series de la versión normal. */
   series: number;
   descansoSeg: number;

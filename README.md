@@ -15,7 +15,7 @@ Las apps de gimnasio asumen un gimnasio comercial y un calendario fijo. Esta
 parte de lo contrario:
 
 - **Equipamiento real de casa:** una multigym con pesas limitadas, banco,
-  mancuernas, barra de dominadas, bandas y espacio al aire libre. La app sabe
+  mancuernas, barra de dominadas y espacio al aire libre. La app sabe
   qué hay y hasta cuánto da cada cosa.
 - **Sin calendario rígido:** muestra el próximo entreno y se adapta a lo que
   pasó (un partido, un día salteado), en vez de exigir días fijos.

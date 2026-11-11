@@ -1,0 +1,1 @@
+ALTER TABLE "ejercicios" ADD COLUMN "kg_guia" real;

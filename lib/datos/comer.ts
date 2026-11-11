@@ -154,3 +154,13 @@ export async function consumoPorDia(dias = 7) {
     .groupBy(registrosComida.fecha)
     .orderBy(asc(registrosComida.fecha));
 }
+
+/** Comidas frecuentes activas, para gestionarlas en Datos. */
+export async function frecuentesActivas(): Promise<(Frecuente & { usos: number })[]> {
+  await connection();
+  return db()
+    .select({ id: comidasFrecuentes.id, nombre: comidasFrecuentes.nombre, kcal: comidasFrecuentes.kcal, proteinaG: comidasFrecuentes.proteinaG, usos: comidasFrecuentes.usos })
+    .from(comidasFrecuentes)
+    .where(eq(comidasFrecuentes.activa, true))
+    .orderBy(asc(comidasFrecuentes.nombre));
+}
