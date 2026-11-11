@@ -26,6 +26,11 @@ export type ResumenPeso = {
 /** Todo lo que necesitan Progreso, Hoy y Comer sobre el peso. Cacheado por pedido. */
 export const resumenPeso = cache(async function resumenPeso(semanas = 8): Promise<ResumenPeso> {
   await connection();
+  return calcularResumenPeso(semanas);
+});
+
+/** Lo mismo sin `connection()` ni caché: para acciones, rutas y el cron. */
+export async function calcularResumenPeso(semanas = 8): Promise<ResumenPeso & { todos: PuntoTendencia[] }> {
   const hoy = fechaLocal();
   const [filasMeta, filas] = await Promise.all([
     db().select().from(perfil).where(eq(perfil.id, 1)),
@@ -55,8 +60,9 @@ export const resumenPeso = cache(async function resumenPeso(semanas = 8): Promis
     ritmoObjetivo: meta && actual !== null ? ritmoObjetivo(actual, meta.pesoMetaKg, hoy, meta.fechaMeta) : null,
     fechaEstimada: meta && actual !== null ? fechaEstimada(actual, meta.pesoMetaKg, ritmo, hoy) : null,
     avance: meta && actual !== null ? avance(meta.pesoInicialKg, actual, meta.pesoMetaKg) : null,
+    todos,
   };
-});
+}
 
 export type ReporteResumido = {
   id: number;

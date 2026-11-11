@@ -231,3 +231,44 @@ export const reportesBalanza = pgTable(
   },
   (t) => [index("reportes_balanza_fecha_idx").on(t.fecha)],
 );
+
+// ─── Nutrición (ADR 0005) ────────────────────────────────────────────────────
+
+/** Comidas que se repiten: se registran en un toque. */
+export const comidasFrecuentes = pgTable("comidas_frecuentes", {
+  id: serial().primaryKey(),
+  nombre: text().notNull(),
+  kcal: integer().notNull(),
+  proteinaG: real().notNull(),
+  /** Veces registrada: ordena la grilla (las más usadas primero). */
+  usos: integer().notNull().default(0),
+  activa: boolean().notNull().default(true),
+  creada: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
+
+export const registrosComida = pgTable(
+  "registros_comida",
+  {
+    id: serial().primaryKey(),
+    fecha: date().notNull(),
+    hora: timestamp({ withTimezone: true }).notNull().defaultNow(),
+    nombre: text().notNull(),
+    kcal: integer().notNull(),
+    proteinaG: real().notNull(),
+    frecuenteId: integer().references(() => comidasFrecuentes.id, { onDelete: "set null" }),
+  },
+  (t) => [index("registros_comida_fecha_idx").on(t.fecha)],
+);
+
+/**
+ * Historial de metas de calorías: cada fila vale desde `desde` hasta la
+ * siguiente. La primera es la estimada; las demás, los ajustes semanales.
+ */
+export const metasCalorias = pgTable("metas_calorias", {
+  id: serial().primaryKey(),
+  desde: date().notNull().unique(),
+  kcal: integer().notNull(),
+  gastoEstimado: integer().notNull(),
+  motivo: text().notNull(),
+  creada: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});

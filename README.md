@@ -5,9 +5,9 @@ corporal: rutinas y registro de entrenos, nutrición simple, composición corpor
 y datos de una pulsera de actividad, todo en un solo lugar. Funciona en el
 celular y en la compu, con una interfaz inspirada en el ecosistema de Apple.
 
-> **Estado:** primeras pantallas. La pantalla **Hoy** y la navegación están
-> construidas con datos sintéticos; faltan la base de datos, el login y la
-> sincronización con Google.
+> **Estado:** en uso. Hoy, Entrenar, Comer y Progreso funcionan con datos
+> reales, sincronizados con la pulsera. Faltan la sección Datos (equipamiento y
+> preferencias) y una demo pública con datos sintéticos.
 
 ## Qué resuelve
 
@@ -64,13 +64,13 @@ Variables de entorno: ver [.env.example](.env.example).
 ```
 app/(app)/        secciones con la navegación común (Hoy, Entrenar, Comer, Progreso, Datos)
 components/       navegación, tarjetas de Hoy, íconos y piezas de UI
-lib/demo/         datos sintéticos (los de la demo pública)
 lib/formato.ts    números y duraciones en formato es-AR
 lib/sesion.ts     sesión firmada; lib/clave.ts: hash de la contraseña
 lib/google/       cliente de la Google Health API, conversión a filas y sincronización
 lib/datos/        lecturas de la base para las pantallas
 lib/entrenos/     progresión de carga, rotación y versión liviana (funciones puras)
 lib/peso.ts       tendencia, ritmo y proyección del peso
+lib/calorias.ts   meta inicial, ajuste semanal y extra por deporte
 lib/balanza/      lector de reportes de la balanza (OCR por posición, PDF, texto)
 app/(foco)/       pantallas sin navegación: el entreno en curso
 db/               esquema de Drizzle y migraciones
@@ -106,7 +106,7 @@ scripts/          prueba de la Google Health API
 - [x] Sincronización con Google Health: pasos, calorías, FC en reposo, sueño y ejercicios
 - [x] Entrenar: rotación A/B, registro de series, progresión de carga e historial ([ADR 0004](docs/decisiones/0004-entrenos-por-rotacion-sin-calendario.md))
 - [x] Progreso: peso diario con tendencia, meta, lector de reportes de la balanza (OCR en el dispositivo) y marcas personales
-- [ ] Comer: calorías y proteína con ajuste semanal automático
+- [x] Comer: calorías y proteína con meta calculada y ajuste semanal automático ([ADR 0005](docs/decisiones/0005-calorias-adaptativas-por-tendencia-de-peso.md))
 - [ ] Datos: equipamiento y preferencias
 - [x] Primer despliegue en Vercel, con datos sintéticos
 - [ ] Demo pública para el portfolio

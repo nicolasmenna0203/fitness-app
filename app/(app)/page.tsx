@@ -6,10 +6,10 @@ import { Anillos } from "@/components/hoy/Anillos";
 import { SincronizarAlAbrir } from "@/components/hoy/SincronizarAlAbrir";
 import { FcReposo, MetaPeso, RecuperacionCargando, Sueno } from "@/components/hoy/Tarjetas";
 import { Encabezado, Etiqueta, Tarjeta } from "@/components/ui";
+import { resumenComer } from "@/lib/datos/comer";
 import { proximoPlan } from "@/lib/datos/entrenos";
 import { resumenPeso } from "@/lib/datos/progreso";
 import { recuperacionDeHoy } from "@/lib/datos/recuperacion";
-import { resumenHoyDemo } from "@/lib/demo/hoy";
 import { fechaLarga, fechaLocal } from "@/lib/fecha";
 
 export const metadata: Metadata = { title: "Hoy" };
@@ -39,16 +39,15 @@ async function Proximo() {
   return plan ? <TarjetaProximo plan={plan} compacto /> : null;
 }
 
-/** Entrenos reales; calorías y proteína siguen sintéticas hasta construir Comer. */
+/** Calorías, proteína y entrenos de los últimos 7 días. */
 async function Metas() {
-  const plan = await proximoPlan();
-  const demo = resumenHoyDemo();
+  const [plan, comer] = await Promise.all([proximoPlan(), resumenComer()]);
   return (
     <Anillos
       vertical
       anillos={[
-        { nombre: "Calorías", valor: demo.kcal.consumidas, meta: demo.kcal.meta, unidad: "kcal", color: "var(--kcal)" },
-        { nombre: "Proteína", valor: demo.proteina.consumida, meta: demo.proteina.meta, unidad: "g", color: "var(--prot)" },
+        { nombre: "Calorías", valor: comer.consumido.kcal, meta: comer.meta?.kcal ?? null, unidad: "kcal", color: "var(--kcal)" },
+        { nombre: "Proteína", valor: comer.consumido.proteinaG, meta: comer.meta?.proteinaG ?? null, unidad: "g", color: "var(--prot)" },
         { nombre: "Entrenos", valor: plan?.hechos7Dias ?? 0, meta: plan?.metaSemana ?? 3, unidad: "en 7 días", color: "var(--move)" },
       ]}
     />

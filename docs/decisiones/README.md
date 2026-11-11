@@ -30,7 +30,7 @@ de calorías: buscá el ADR acá. Ver [PLANTILLA.md](PLANTILLA.md) para el flujo
 | # | Decisión | Estado |
 |---|---|---|
 | [0004](0004-entrenos-por-rotacion-sin-calendario.md) | Entrenos por rotación, sin calendario fijo | Aceptada |
-| [0005](0005-calorias-adaptativas-por-tendencia-de-peso.md) | Calorías que se ajustan cada semana según la tendencia del peso | Propuesta |
+| [0005](0005-calorias-adaptativas-por-tendencia-de-peso.md) | Calorías que se ajustan cada semana según la tendencia del peso | Aceptada |
 
 ## Reemplazadas
 

@@ -50,7 +50,17 @@ agregan a medida que se construye cada sección.
 - Guardar un reporte registra su peso como pesaje de ese día, salvo que ya
   haya uno manual.
 
+## Nutrición
+
+| Tabla | Qué guarda | Clave |
+|---|---|---|
+| `comidas_frecuentes` | Comidas que se repiten: calorías, proteína y cantidad de usos (ordena la grilla) | `id` |
+| `registros_comida` | Cada comida registrada: fecha, hora, calorías y proteína | `id` |
+| `metas_calorias` | Historial de metas: cada fila vale desde `desde`, con el gasto estimado y el motivo del ajuste | `id`; `desde` único |
+
+- Solo se pueden borrar registros del día: los anteriores alimentan el ajuste.
+- Quitar una frecuente la oculta; los registros que la usaron se conservan.
+
 ## Próximas tablas
 
-- Nutrición: comidas frecuentes, registro diario y ajustes semanales de calorías.
 - Fotos de progreso.

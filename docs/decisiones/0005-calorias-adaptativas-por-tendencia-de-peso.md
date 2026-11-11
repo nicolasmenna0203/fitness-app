@@ -1,9 +1,9 @@
 ---
 numero: 0005
 titulo: Calorías que se ajustan cada semana según la tendencia del peso
-estado: Propuesta
+estado: Aceptada
 fecha: 2026-11-10
-codigo: —
+codigo: lib/calorias.ts, lib/peso.ts, lib/datos/comer.ts, app/acciones/comer.ts
 ---
 
 # 0005 — Calorías que se ajustan cada semana según la tendencia del peso
@@ -42,6 +42,27 @@ que un día suelto no sirve para decidir nada.
    meta de ese día.
 6. **Proteína:** meta fija de 1,6-2,2 g por kg de peso corporal (rango estándar
    en la literatura para ganar músculo).
+
+### Cómo quedó implementado
+
+- **Tendencia:** media móvil exponencial con α = 0,1 por día; con días sin
+  pesar, el peso del intervalo es 1 − (1 − α)^días (`lib/peso.ts`).
+- **Ritmo objetivo:** lo que falta hasta la meta dividido las semanas que
+  quedan, con el tope de 0,5 % del peso por semana.
+- **Meta inicial:** gasto = (basal + calorías activas promedio de la pulsera)
+  ÷ 0,9 (efecto térmico de la comida ≈ 10 %). Sin balanza, basal ≈ 22 kcal por
+  kg; sin pulsera, actividad ≈ 30 % del basal. Estimaciones gruesas que el
+  primer ajuste corrige.
+- **Ajuste semanal:** cada 7 días desde la última meta, con los 7 días previos.
+  Necesita comidas registradas en al menos 5 días y pesajes para la tendencia;
+  si falta algo, la meta sigue igual y se explica por qué. Corre al abrir la
+  app y en el cron diario; cada meta queda guardada con su motivo
+  (`metas_calorias`).
+- **Días con deporte:** se suman las calorías de actividades de 40 min o más
+  que no sean caminar, yoga o elongación. No se duplica con el promedio de
+  actividad: el ajuste semanal calibra con lo que realmente se comió.
+- **Proteína:** el valor por kg del perfil (por defecto 1,8 g/kg) × la
+  tendencia del peso.
 
 ## Consecuencias y límites
 

@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import type { NextRequest } from "next/server";
+import { ajustarMetaSiCorresponde } from "@/lib/datos/comer";
 import { sincronizarGoogle } from "@/lib/google/sync";
 
 /**
@@ -15,5 +16,6 @@ export async function GET(req: NextRequest) {
   if (!ok) return new Response("No autorizado", { status: 401 });
 
   const r = await sincronizarGoogle(3);
-  return Response.json(r, { status: r.estado === "error" ? 500 : 200 });
+  const ajuste = await ajustarMetaSiCorresponde().catch((e) => `error: ${e instanceof Error ? e.message : e}`);
+  return Response.json({ ...r, ajusteCalorias: ajuste }, { status: r.estado === "error" ? 500 : 200 });
 }

@@ -6,11 +6,17 @@ import { db } from "@/db";
 import { conexionGoogle } from "@/db/schema";
 import { descifrar } from "@/lib/cifrado";
 import { revocar } from "@/lib/google/api";
-import { sincronizarGoogle, sincronizarSiHaceFalta, type ResultadoSync } from "@/lib/google/sync";
+import { ajustarMetaSiCorresponde } from "@/lib/datos/comer";
+import { sincronizarGoogle, sincronizarSiHaceFalta } from "@/lib/google/sync";
 
-/** Al abrir la app. Devuelve si trajo datos nuevos, para refrescar la pantalla. */
-export async function sincronizarAlAbrir(): Promise<ResultadoSync> {
-  return sincronizarSiHaceFalta();
+/**
+ * Al abrir la app: trae datos nuevos de Google y, si toca, hace el ajuste
+ * semanal de calorías (ADR 0005). Devuelve si cambió algo, para refrescar.
+ */
+export async function sincronizarAlAbrir(): Promise<{ cambio: boolean }> {
+  const sync = await sincronizarSiHaceFalta().catch(() => null);
+  const ajuste = await ajustarMetaSiCorresponde().catch(() => null);
+  return { cambio: sync?.estado === "ok" || ajuste === "creada" || ajuste === "ajustada" };
 }
 
 export async function sincronizarAhora(): Promise<void> {

@@ -8,9 +8,3 @@ export type Recuperacion = {
   fcReposoVsPromedio: number | null;
   variabilidadMs: number | null;
 };
-
-/** Lo que Hoy todavía muestra con datos sintéticos (secciones sin construir). */
-export type ResumenHoyDemo = {
-  kcal: { consumidas: number; meta: number };
-  proteina: { consumida: number; meta: number };
-};

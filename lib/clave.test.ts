@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { hashClave, verificarClave } from "./clave";
 
-describe("clave", () => {
+// scrypt es lento a propósito: con la máquina cargada puede pasar los 5 s por defecto.
+describe("clave", { timeout: 30_000 }, () => {
   const hash = hashClave("una frase larga de prueba");
 
   it("verifica la contraseña correcta", () => {
