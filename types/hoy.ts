@@ -13,5 +13,4 @@ export type Recuperacion = {
 export type ResumenHoyDemo = {
   kcal: { consumidas: number; meta: number };
   proteina: { consumida: number; meta: number };
-  peso: { tendencia: number; ritmoSemanal: number; ritmoObjetivo: number; meta: number; inicio: number; mesMeta: string };
 };

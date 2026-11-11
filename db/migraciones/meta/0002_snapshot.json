@@ -1,0 +1,939 @@
+{
+  "id": "2ebaa901-6083-4ac8-8251-b43c4025998a",
+  "prevId": "e9ea9093-31b9-474c-a757-b7bd190b4aea",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.actividades": {
+      "name": "actividades",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "origen": {
+          "name": "origen",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "externo_id": {
+          "name": "externo_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "inicio": {
+          "name": "inicio",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fin": {
+          "name": "fin",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kcal": {
+          "name": "kcal",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fc_media": {
+          "name": "fc_media",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pasos": {
+          "name": "pasos",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "distancia_m": {
+          "name": "distancia_m",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "crudo": {
+          "name": "crudo",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "actividades_fecha_idx": {
+          "name": "actividades_fecha_idx",
+          "columns": [
+            {
+              "expression": "fecha",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "actividades_externoId_unique": {
+          "name": "actividades_externoId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "externo_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.conexion_google": {
+      "name": "conexion_google",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "smallint",
+          "primaryKey": true,
+          "notNull": true,
+          "default": 1
+        },
+        "refresh_token_cifrado": {
+          "name": "refresh_token_cifrado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "permisos": {
+          "name": "permisos",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "conectado_en": {
+          "name": "conectado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "ultima_sync": {
+          "name": "ultima_sync",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ultimo_error": {
+          "name": "ultimo_error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "una_sola_conexion": {
+          "name": "una_sola_conexion",
+          "value": "\"conexion_google\".\"id\" = 1"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.ejercicios": {
+      "name": "ejercicios",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "equipo": {
+          "name": "equipo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grupo": {
+          "name": "grupo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipo_carga": {
+          "name": "tipo_carga",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reps_min": {
+          "name": "reps_min",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reps_max": {
+          "name": "reps_max",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "incremento_kg": {
+          "name": "incremento_kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "carga_max_kg": {
+          "name": "carga_max_kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nota": {
+          "name": "nota",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "ejercicios_slug_unique": {
+          "name": "ejercicios_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.entrenos": {
+      "name": "entrenos",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "plantilla_id": {
+          "name": "plantilla_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "inicio": {
+          "name": "inicio",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "fin": {
+          "name": "fin",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "liviana": {
+          "name": "liviana",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "estado": {
+          "name": "estado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'en_curso'"
+        }
+      },
+      "indexes": {
+        "entrenos_fecha_idx": {
+          "name": "entrenos_fecha_idx",
+          "columns": [
+            {
+              "expression": "fecha",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "entrenos_plantilla_id_plantillas_id_fk": {
+          "name": "entrenos_plantilla_id_plantillas_id_fk",
+          "tableFrom": "entrenos",
+          "tableTo": "plantillas",
+          "columnsFrom": [
+            "plantilla_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.metricas_diarias": {
+      "name": "metricas_diarias",
+      "schema": "",
+      "columns": {
+        "fecha": {
+          "name": "fecha",
+          "type": "date",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "pasos": {
+          "name": "pasos",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kcal_activas": {
+          "name": "kcal_activas",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fc_reposo": {
+          "name": "fc_reposo",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vfc_ms": {
+          "name": "vfc_ms",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "spo2_pct": {
+          "name": "spo2_pct",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sueno_min": {
+          "name": "sueno_min",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "crudo": {
+          "name": "crudo",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.perfil": {
+      "name": "perfil",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "smallint",
+          "primaryKey": true,
+          "notNull": true,
+          "default": 1
+        },
+        "peso_meta_kg": {
+          "name": "peso_meta_kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fecha_meta": {
+          "name": "fecha_meta",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "peso_inicial_kg": {
+          "name": "peso_inicial_kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proteina_g_por_kg": {
+          "name": "proteina_g_por_kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1.8
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "un_solo_perfil": {
+          "name": "un_solo_perfil",
+          "value": "\"perfil\".\"id\" = 1"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.pesajes": {
+      "name": "pesajes",
+      "schema": "",
+      "columns": {
+        "fecha": {
+          "name": "fecha",
+          "type": "date",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kg": {
+          "name": "kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "origen": {
+          "name": "origen",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.plantilla_ejercicios": {
+      "name": "plantilla_ejercicios",
+      "schema": "",
+      "columns": {
+        "plantilla_id": {
+          "name": "plantilla_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "orden": {
+          "name": "orden",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ejercicio_id": {
+          "name": "ejercicio_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "series": {
+          "name": "series",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "descanso_seg": {
+          "name": "descanso_seg",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 90
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "plantilla_ejercicios_plantilla_id_plantillas_id_fk": {
+          "name": "plantilla_ejercicios_plantilla_id_plantillas_id_fk",
+          "tableFrom": "plantilla_ejercicios",
+          "tableTo": "plantillas",
+          "columnsFrom": [
+            "plantilla_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "plantilla_ejercicios_ejercicio_id_ejercicios_id_fk": {
+          "name": "plantilla_ejercicios_ejercicio_id_ejercicios_id_fk",
+          "tableFrom": "plantilla_ejercicios",
+          "tableTo": "ejercicios",
+          "columnsFrom": [
+            "ejercicio_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "plantilla_ejercicios_plantilla_id_orden_pk": {
+          "name": "plantilla_ejercicios_plantilla_id_orden_pk",
+          "columns": [
+            "plantilla_id",
+            "orden"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.plantillas": {
+      "name": "plantillas",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "orden": {
+          "name": "orden",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "activa": {
+          "name": "activa",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "plantillas_orden_unique": {
+          "name": "plantillas_orden_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "orden"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.reportes_balanza": {
+      "name": "reportes_balanza",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kg": {
+          "name": "kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grasa_pct": {
+          "name": "grasa_pct",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "masa_muscular_kg": {
+          "name": "masa_muscular_kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "musculo_esqueletico_kg": {
+          "name": "musculo_esqueletico_kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "agua_pct": {
+          "name": "agua_pct",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grasa_visceral": {
+          "name": "grasa_visceral",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "basal_kcal": {
+          "name": "basal_kcal",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "valores": {
+          "name": "valores",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "creado": {
+          "name": "creado",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "reportes_balanza_fecha_idx": {
+          "name": "reportes_balanza_fecha_idx",
+          "columns": [
+            {
+              "expression": "fecha",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.series": {
+      "name": "series",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "entreno_id": {
+          "name": "entreno_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ejercicio_id": {
+          "name": "ejercicio_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "numero": {
+          "name": "numero",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kg": {
+          "name": "kg",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reps": {
+          "name": "reps",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hecha_en": {
+          "name": "hecha_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "series_ejercicio_idx": {
+          "name": "series_ejercicio_idx",
+          "columns": [
+            {
+              "expression": "ejercicio_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "series_entreno_id_entrenos_id_fk": {
+          "name": "series_entreno_id_entrenos_id_fk",
+          "tableFrom": "series",
+          "tableTo": "entrenos",
+          "columnsFrom": [
+            "entreno_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "series_ejercicio_id_ejercicios_id_fk": {
+          "name": "series_ejercicio_id_ejercicios_id_fk",
+          "tableFrom": "series",
+          "tableTo": "ejercicios",
+          "columnsFrom": [
+            "ejercicio_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "series_unica": {
+          "name": "series_unica",
+          "nullsNotDistinct": false,
+          "columns": [
+            "entreno_id",
+            "ejercicio_id",
+            "numero"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.suenos": {
+      "name": "suenos",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "inicio": {
+          "name": "inicio",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fin": {
+          "name": "fin",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "minutos_dormido": {
+          "name": "minutos_dormido",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "crudo": {
+          "name": "crudo",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "suenos_fecha_idx": {
+          "name": "suenos_fecha_idx",
+          "columns": [
+            {
+              "expression": "fecha",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

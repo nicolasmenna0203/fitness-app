@@ -4,10 +4,9 @@ App web personal (celular + escritorio, instalable) para un gimnasio en casa:
 entrenos, nutrición simple, composición corporal y datos de una pulsera Fitbit.
 UI inspirada en el ecosistema de Apple. Stack previsto: Next.js en Vercel,
 Postgres en Neon, datos de la pulsera vía Google Health API (ADR 0002, 0007).
-Estado: navegación, login, base en Neon, sincronización con Google Health y
-Entrenar. En Hoy, sueño, FC en reposo, próximo entreno y entrenos de la semana
-son reales; comidas y peso siguen con datos sintéticos de `lib/demo/` hasta
-construir esas secciones.
+Estado: navegación, login, base en Neon, sincronización con Google Health,
+Entrenar y Progreso. En Hoy todo es real salvo calorías y proteína, que siguen
+con datos sintéticos de `lib/demo/` hasta construir Comer.
 
 **Base de datos (ADR 0009):** Drizzle sobre Neon por HTTP; esquema en
 `db/schema.ts`, migraciones con `npm run db:generate` y `npm run db:migrate`.

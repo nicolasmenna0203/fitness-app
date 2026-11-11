@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Datos y scripts personales, fuera de git (ADR 0006).
+    "privado/**",
   ]),
 ]);
 

@@ -7,6 +7,7 @@ import { SincronizarAlAbrir } from "@/components/hoy/SincronizarAlAbrir";
 import { FcReposo, MetaPeso, RecuperacionCargando, Sueno } from "@/components/hoy/Tarjetas";
 import { Encabezado, Etiqueta, Tarjeta } from "@/components/ui";
 import { proximoPlan } from "@/lib/datos/entrenos";
+import { resumenPeso } from "@/lib/datos/progreso";
 import { recuperacionDeHoy } from "@/lib/datos/recuperacion";
 import { resumenHoyDemo } from "@/lib/demo/hoy";
 import { fechaLarga, fechaLocal } from "@/lib/fecha";
@@ -27,6 +28,10 @@ async function Recuperacion() {
       <FcReposo r={r} />
     </>
   );
+}
+
+async function Peso() {
+  return <MetaPeso r={await resumenPeso()} />;
 }
 
 async function Proximo() {
@@ -51,8 +56,6 @@ async function Metas() {
 }
 
 export default function HoyPage() {
-  const demo = resumenHoyDemo();
-
   return (
     <>
       <SincronizarAlAbrir />
@@ -85,7 +88,9 @@ export default function HoyPage() {
         </div>
 
         <div className="md:col-span-2 xl:col-span-3">
-          <MetaPeso peso={demo.peso} />
+          <Suspense fallback={<Tarjeta className="h-24 animate-pulse">{null}</Tarjeta>}>
+            <Peso />
+          </Suspense>
         </div>
       </div>
     </>

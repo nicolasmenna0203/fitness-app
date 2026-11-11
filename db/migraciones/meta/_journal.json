@@ -15,6 +15,13 @@
       "when": 1794355505291,
       "tag": "0001_entrenamiento",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794362015760,
+      "tag": "0002_cuerpo",
+      "breakpoints": true
     }
   ]
 }

@@ -47,3 +47,6 @@ desktop.ini
 .vercel
 .env*
 !.env.example
+
+# Datos de idioma de Tesseract que descarga el lector de reportes
+*.traineddata

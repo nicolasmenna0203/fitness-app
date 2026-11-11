@@ -184,3 +184,50 @@ export const series = pgTable(
   },
   (t) => [unique("series_unica").on(t.entrenoId, t.ejercicioId, t.numero), index("series_ejercicio_idx").on(t.ejercicioId)],
 );
+
+// ─── Cuerpo y metas (ADR 0005) ───────────────────────────────────────────────
+
+/** Perfil y meta: una sola fila. Datos personales: viven solo en la base. */
+export const perfil = pgTable(
+  "perfil",
+  {
+    id: smallint().primaryKey().default(1),
+    pesoMetaKg: real().notNull(),
+    fechaMeta: date().notNull(),
+    /** Peso al fijar la meta: punto de partida de la barra de avance. */
+    pesoInicialKg: real().notNull(),
+    proteinaGPorKg: real().notNull().default(1.8),
+    actualizado: actualizado(),
+  },
+  (t) => [check("un_solo_perfil", sql`${t.id} = 1`)],
+);
+
+/** Un pesaje por día (el último del día manda). */
+export const pesajes = pgTable("pesajes", {
+  fecha: date().primaryKey(),
+  kg: real().notNull(),
+  origen: text({ enum: ["manual", "balanza"] }).notNull(),
+  actualizado: actualizado(),
+});
+
+/**
+ * Reportes de la balanza de composición corporal. Los campos principales van en
+ * columnas para graficarlos; `valores` guarda todo lo leído del reporte.
+ */
+export const reportesBalanza = pgTable(
+  "reportes_balanza",
+  {
+    id: serial().primaryKey(),
+    fecha: date().notNull(),
+    kg: real().notNull(),
+    grasaPct: real(),
+    masaMuscularKg: real(),
+    musculoEsqueleticoKg: real(),
+    aguaPct: real(),
+    grasaVisceral: real(),
+    basalKcal: integer(),
+    valores: jsonb().$type<Record<string, number>>().notNull().default({}),
+    creado: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("reportes_balanza_fecha_idx").on(t.fecha)],
+);

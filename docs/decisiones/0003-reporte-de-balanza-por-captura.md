@@ -1,7 +1,7 @@
 ---
 numero: 0003
 titulo: Reporte de la balanza cargado por captura, con extracción automática
-estado: Propuesta
+estado: Reemplazada por 0010
 fecha: 2026-11-10
 codigo: —
 ---

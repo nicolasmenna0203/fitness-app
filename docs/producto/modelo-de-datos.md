@@ -38,8 +38,19 @@ agregan a medida que se construye cada sección.
 - Terminar un entreno sin ninguna serie lo descarta.
 - La rotación inicial se carga con `npm run db:semilla` (idempotente).
 
+## Cuerpo y metas
+
+| Tabla | Qué guarda | Clave |
+|---|---|---|
+| `perfil` | Peso meta, fecha meta, peso de partida y proteína por kg | Una sola fila (`id = 1`) |
+| `pesajes` | Un peso por día, manual o de la balanza (el manual tiene prioridad) | `fecha` |
+| `reportes_balanza` | Reportes de composición corporal: columnas para los campos principales y `valores` (jsonb) con todo lo leído | `id` |
+
+- La tendencia del peso se calcula al leer (`lib/peso.ts`), no se guarda.
+- Guardar un reporte registra su peso como pesaje de ese día, salvo que ya
+  haya uno manual.
+
 ## Próximas tablas
 
-- Nutrición: comidas frecuentes y registro diario.
-- Cuerpo: pesajes, reportes de la balanza y fotos.
-- Metas: peso objetivo, fecha y ajustes semanales de calorías.
+- Nutrición: comidas frecuentes, registro diario y ajustes semanales de calorías.
+- Fotos de progreso.
