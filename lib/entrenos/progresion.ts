@@ -6,6 +6,7 @@
  * variante más difícil. Funciones puras: sin base ni red.
  */
 import type { TipoCarga } from "@/db/schema";
+import { esDeporte, nombreActividad } from "../actividades";
 
 export type ConfigEjercicio = {
   tipoCarga: TipoCarga;
@@ -127,16 +128,13 @@ export function siguientePlantilla<T extends { id: number; orden: number }>(acti
 
 export type ActividadReciente = { tipo: string; nombre: string | null; minutos: number };
 
-/** Actividades que no cargan las piernas ni el cuerpo como para cambiar el entreno. */
-const LIVIANAS = new Set(["WALKING", "YOGA", "STRETCHING", "MEDITATION"]);
-
 /**
  * Motivo para sugerir la versión liviana, o null. Es una sugerencia: el usuario
  * decide con el interruptor.
  */
 export function motivoLiviana(actividadesAyer: ActividadReciente[], recuperacion: "buena" | "media" | "baja" | null): string | null {
-  const deporte = actividadesAyer.find((a) => a.minutos >= 40 && !LIVIANAS.has(a.tipo));
-  if (deporte) return `Ayer: ${(deporte.nombre ?? deporte.tipo).toLowerCase()} (${Math.round(deporte.minutos)} min).`;
+  const deporte = actividadesAyer.find((a) => esDeporte(a, 40));
+  if (deporte) return `Ayer: ${nombreActividad(deporte.tipo, deporte.nombre).toLowerCase()} (${Math.round(deporte.minutos)} min).`;
   if (recuperacion === "baja") return "Tu recuperación está baja hoy.";
   return null;
 }

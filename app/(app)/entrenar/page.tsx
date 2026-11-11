@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { borrarActividad } from "@/app/acciones/actividades";
+import { PartidoOCardio } from "@/components/entrenar/PartidoOCardio";
 import { TarjetaProximo } from "@/components/entrenar/TarjetaProximo";
 import { Encabezado, Etiqueta, Tarjeta } from "@/components/ui";
 import { historial, proximoPlan } from "@/lib/datos/entrenos";
@@ -37,7 +39,16 @@ async function Historial() {
                   {i.titulo}
                 </span>
               </span>
-              <span className="shrink-0 text-[13px] text-ink2 tabular-nums">{i.detalle}</span>
+              <span className="flex shrink-0 items-center gap-1 text-[13px] text-ink2 tabular-nums">
+                {i.detalle}
+                {i.borrableId !== null && (
+                  <form action={borrarActividad.bind(null, i.borrableId)}>
+                    <button type="submit" aria-label={`Borrar ${i.titulo}`} className="size-8 rounded-full text-[15px] active:bg-fill">
+                      ×
+                    </button>
+                  </form>
+                )}
+              </span>
             </li>
           ))}
         </ul>
@@ -58,9 +69,12 @@ export default function EntrenarPage() {
         <Suspense fallback={<Cargando alto="h-96" />}>
           <Proximo />
         </Suspense>
-        <Suspense fallback={<Cargando alto="h-64" />}>
-          <Historial />
-        </Suspense>
+        <div className="flex flex-col gap-3 md:gap-4">
+          <PartidoOCardio />
+          <Suspense fallback={<Cargando alto="h-64" />}>
+            <Historial />
+          </Suspense>
+        </div>
       </div>
     </>
   );

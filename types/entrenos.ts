@@ -49,4 +49,6 @@ export type ItemHistorial = {
   titulo: string;
   detalle: string;
   esEntreno: boolean;
+  /** Id de una actividad cargada a mano (se puede borrar); null en el resto. */
+  borrableId: number | null;
 };

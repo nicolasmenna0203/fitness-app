@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { cache } from "react";
 import { db } from "@/db";
 import { actividades, ejercicios, entrenos, plantillaEjercicios, plantillas, series } from "@/db/schema";
+import { minutosEntre, nombreActividad, sinDuplicados } from "@/lib/actividades";
 import { recuperacionDeHoy } from "@/lib/datos/recuperacion";
 import { motivoLiviana, siguientePlantilla, sugerir, type SerieHecha } from "@/lib/entrenos/progresion";
 import { fechaLocal, sumarDias } from "@/lib/fecha";
@@ -151,8 +152,6 @@ export async function sesionEntreno(id: number): Promise<SesionEntreno | null> {
   return { id: e.id, nombre: e.nombre, inicio: e.inicio.toISOString(), liviana: e.liviana, estado: e.estado, ejercicios: plan, hechas };
 }
 
-const DEPORTES: Record<string, string> = { SOCCER: "Fútbol", WALKING: "Caminata", RUNNING: "Correr", TENNIS: "Tenis", BIKING: "Bici" };
-
 /** Entrenos terminados y actividades de la pulsera de los últimos días, mezclados por fecha. */
 export async function historial(dias = 14): Promise<ItemHistorial[]> {
   await connection();
@@ -166,9 +165,10 @@ export async function historial(dias = 14): Promise<ItemHistorial[]> {
       .where(and(eq(entrenos.estado, "terminado"), gte(entrenos.fecha, desde)))
       .groupBy(entrenos.id, plantillas.nombre),
     db()
-      .select({ id: actividades.id, fecha: actividades.fecha, inicio: actividades.inicio, fin: actividades.fin, tipo: actividades.tipo, nombre: actividades.nombre, kcal: actividades.kcal })
+      .select({ id: actividades.id, origen: actividades.origen, fecha: actividades.fecha, inicio: actividades.inicio, fin: actividades.fin, tipo: actividades.tipo, nombre: actividades.nombre, kcal: actividades.kcal })
       .from(actividades)
-      .where(gte(actividades.fecha, desde)),
+      .where(gte(actividades.fecha, desde))
+      .then((filas) => sinDuplicados(filas.map((a) => ({ ...a, minutos: minutosEntre(a.inicio, a.fin) })))),
   ]);
   const min = (a: Date, b: Date | null) => (b ? Math.round((b.getTime() - a.getTime()) / 60000) : null);
   const items: (ItemHistorial & { orden: number })[] = [
@@ -179,19 +179,21 @@ export async function historial(dias = 14): Promise<ItemHistorial[]> {
       titulo: e.nombre + (e.liviana ? " · liviana" : ""),
       detalle: [`${e.nSeries} series`, min(e.inicio, e.fin) !== null ? `${min(e.inicio, e.fin)} min` : null].filter(Boolean).join(" · "),
       esEntreno: true,
+      borrableId: null,
     })),
     ...acts.map((a) => ({
       clave: `a${a.id}`,
       fecha: a.fecha,
       orden: a.inicio.getTime(),
-      titulo: a.nombre ?? DEPORTES[a.tipo] ?? a.tipo,
-      detalle: [`${min(a.inicio, a.fin)} min`, a.kcal !== null ? `${a.kcal} kcal` : null].filter(Boolean).join(" · "),
+      titulo: nombreActividad(a.tipo, a.nombre),
+      detalle: [`${min(a.inicio, a.fin)} min`, a.kcal !== null ? `${a.origen === "manual" ? "~" : ""}${a.kcal} kcal` : null].filter(Boolean).join(" · "),
       esEntreno: false,
+      borrableId: a.origen === "manual" ? a.id : null,
     })),
   ];
   return items
     .sort((a, b) => b.orden - a.orden)
-    .map((i) => ({ clave: i.clave, fecha: i.fecha, titulo: i.titulo, detalle: i.detalle, esEntreno: i.esEntreno }));
+    .map((i) => ({ clave: i.clave, fecha: i.fecha, titulo: i.titulo, detalle: i.detalle, esEntreno: i.esEntreno, borrableId: i.borrableId }));
 }
 
 export type EjercicioCatalogoConUso = {

@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { cache } from "react";
 import { db } from "@/db";
 import { actividades, comidasFrecuentes, metasCalorias, metricasDiarias, registrosComida, reportesBalanza } from "@/db/schema";
+import { minutosEntre, sinDuplicados } from "@/lib/actividades";
 import { ajusteSemanal, extraPorDeporte, metaInicial, metaProteina } from "@/lib/calorias";
 import { fechaLocal, sumarDias } from "@/lib/fecha";
 import { calcularResumenPeso } from "./progreso";
@@ -115,9 +116,10 @@ export const resumenComer = cache(async function resumenComer(): Promise<Resumen
       .where(eq(comidasFrecuentes.activa, true))
       .orderBy(desc(comidasFrecuentes.usos), asc(comidasFrecuentes.nombre)),
     db()
-      .select({ tipo: actividades.tipo, inicio: actividades.inicio, fin: actividades.fin, kcal: actividades.kcal })
+      .select({ origen: actividades.origen, fecha: actividades.fecha, tipo: actividades.tipo, inicio: actividades.inicio, fin: actividades.fin, kcal: actividades.kcal })
       .from(actividades)
-      .where(eq(actividades.fecha, hoy)),
+      .where(eq(actividades.fecha, hoy))
+      .then((filas) => sinDuplicados(filas.map((a) => ({ ...a, minutos: minutosEntre(a.inicio, a.fin) })))),
   ]);
 
   let meta: ResumenComer["meta"] = null;
@@ -130,7 +132,7 @@ export const resumenComer = cache(async function resumenComer(): Promise<Resumen
       base = metaInicial({ basalKcal: basal, pesoKg: peso.actual, kcalActivasPromedio: activas, ritmoObjetivo: peso.ritmoObjetivo }).kcal;
       motivo = "Estimación inicial. Se ajusta cada semana según tu peso.";
     }
-    const extra = extraPorDeporte(acts.map((a) => ({ tipo: a.tipo, kcal: a.kcal, minutos: (a.fin.getTime() - a.inicio.getTime()) / 60000 })));
+    const extra = extraPorDeporte(acts);
     meta = { kcal: base + extra, base, extraDeporte: extra, proteinaG: metaProteina(peso.actual, peso.meta.proteinaGPorKg), motivo, desde: vigente?.desde ?? null };
   }
 

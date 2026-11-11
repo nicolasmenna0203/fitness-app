@@ -10,6 +10,8 @@
  *  - Tope de cambio semanal: ±150 kcal (arbitrario, para no reaccionar al ruido).
  *  - Ajuste solo con al menos 5 días con comidas registradas en la semana.
  */
+import { esDeporte } from "./actividades";
+
 export const KCAL_POR_KG = 7700;
 export const TOPE_AJUSTE = 150;
 export const DIAS_MINIMOS = 5;
@@ -70,7 +72,6 @@ export function metaProteina(pesoKg: number, gPorKg: number): number {
 }
 
 /** Deportes que suman a la meta del día: no caminatas ni elongación, y de 40 min o más. */
-const NO_SUMAN = new Set(["WALKING", "YOGA", "STRETCHING", "MEDITATION"]);
 export function extraPorDeporte(actividades: { tipo: string; minutos: number; kcal: number | null }[]): number {
-  return a10(actividades.filter((a) => !NO_SUMAN.has(a.tipo) && a.minutos >= 40 && a.kcal).reduce((s, a) => s + (a.kcal ?? 0), 0));
+  return a10(actividades.filter((a) => esDeporte(a, 40) && a.kcal).reduce((s, a) => s + (a.kcal ?? 0), 0));
 }
