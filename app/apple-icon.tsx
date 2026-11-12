@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
 
 // Ícono de la pantalla de inicio del iPhone. iOS le aplica sus propias esquinas.
-// Anillos blancos: con el estilo de íconos oscuro, iOS oscurece el fondo y unos
-// anillos negros desaparecían.
+// Con el estilo de íconos oscuro, iOS oscurece los íconos de las web apps y no hay
+// forma de darle una versión oscura propia (sí la tienen las apps nativas).
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
@@ -24,13 +24,13 @@ export default function AppleIcon() {
             width: 104,
             height: 104,
             borderRadius: 52,
-            border: "17px solid #FFFFFF",
+            border: "17px solid #111111",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <div style={{ width: 40, height: 40, borderRadius: 20, border: "17px solid #FFFFFF" }} />
+          <div style={{ width: 40, height: 40, borderRadius: 20, border: "17px solid #111111" }} />
         </div>
       </div>
     ),
