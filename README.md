@@ -5,9 +5,9 @@ corporal: rutinas y registro de entrenos, nutrición simple, composición corpor
 y datos de una pulsera de actividad, todo en un solo lugar. Funciona en el
 celular y en la compu, con una interfaz inspirada en el ecosistema de Apple.
 
-> **Estado:** en uso. Hoy, Entrenar, Comer y Progreso funcionan con datos
-> reales, sincronizados con la pulsera. Faltan la sección Datos (equipamiento y
-> preferencias) y una demo pública con datos sintéticos.
+> **Estado:** en uso. Las cinco secciones funcionan con datos reales,
+> sincronizados con la pulsera. Hay una [demo pública](#demo) con datos
+> inventados.
 
 ## Qué resuelve
 
@@ -107,9 +107,25 @@ scripts/          prueba de la Google Health API
 - [x] Entrenar: rotación A/B, registro de series, progresión de carga e historial ([ADR 0004](docs/decisiones/0004-entrenos-por-rotacion-sin-calendario.md))
 - [x] Progreso: peso diario con tendencia, meta, lector de reportes de la balanza (OCR en el dispositivo) y marcas personales
 - [x] Comer: calorías y proteína con meta calculada y ajuste semanal automático ([ADR 0005](docs/decisiones/0005-calorias-adaptativas-por-tendencia-de-peso.md))
-- [ ] Datos: equipamiento y preferencias
+- [x] Datos: equipamiento con pesos de referencia y comidas frecuentes
+- [x] Partidos y cardio cargados a mano, sin duplicar lo que registra la pulsera
+- [x] Fotos de progreso desde la app ([ADR 0011](docs/decisiones/0011-fotos-de-progreso-en-la-base.md))
+- [x] Revisión semanal en Hoy y Progreso
 - [x] Primer despliegue en Vercel, con datos sintéticos
-- [ ] Demo pública para el portfolio
+- [x] Demo pública para el portfolio
+
+## Demo
+
+Un segundo proyecto de Vercel despliega este mismo repo con `DEMO=1`: sin
+login, sin conexión con Google y sin subida de fotos, sobre una base propia
+con datos inventados. El cron diario, en vez de sincronizar, borra la base y
+genera 10 semanas nuevas relativas a hoy (`lib/demo/semilla.ts`), así que lo
+que cargue un visitante dura hasta el día siguiente.
+
+La regeneración solo corre si el despliegue tiene `DEMO=1` **y** la base
+tiene la tabla `demo_marca`, que no está en el esquema y se crea a mano solo
+en la base de la demo. Las migraciones de esa base se aplican aparte, con su
+`DATABASE_URL_UNPOOLED`.
 
 ## Privacidad
 
