@@ -5,11 +5,13 @@ import { TarjetaProximo } from "@/components/entrenar/TarjetaProximo";
 import { Anillos } from "@/components/hoy/Anillos";
 import { SincronizarAlAbrir } from "@/components/hoy/SincronizarAlAbrir";
 import { FcReposo, MetaPeso, RecuperacionCargando, Sueno } from "@/components/hoy/Tarjetas";
+import { RevisionSemanal } from "@/components/semana/RevisionSemanal";
 import { Encabezado, Etiqueta, Tarjeta } from "@/components/ui";
 import { resumenComer } from "@/lib/datos/comer";
 import { proximoPlan } from "@/lib/datos/entrenos";
 import { resumenPeso } from "@/lib/datos/progreso";
 import { recuperacionDeHoy } from "@/lib/datos/recuperacion";
+import { revisionSemanal } from "@/lib/datos/semana";
 import { fechaLarga, fechaLocal } from "@/lib/fecha";
 
 export const metadata: Metadata = { title: "Hoy" };
@@ -28,6 +30,12 @@ async function Recuperacion() {
       <FcReposo r={r} />
     </>
   );
+}
+
+/** En Hoy, la revisión aparece el día del ajuste semanal y el siguiente. */
+async function Semana() {
+  const r = await revisionSemanal();
+  return r.ajuste ? <RevisionSemanal r={r} /> : null;
 }
 
 async function Peso() {
@@ -91,6 +99,12 @@ export default function HoyPage() {
             <Peso />
           </Suspense>
         </div>
+
+        <Suspense fallback={null}>
+          <div className="empty:hidden md:col-span-2 xl:col-span-3">
+            <Semana />
+          </div>
+        </Suspense>
       </div>
     </>
   );

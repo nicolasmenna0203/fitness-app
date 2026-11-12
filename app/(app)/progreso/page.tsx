@@ -6,9 +6,11 @@ import { SubirFoto } from "@/components/progreso/Fotos";
 import { FormMeta, FormPesaje } from "@/components/progreso/Formularios";
 import { GraficoPeso } from "@/components/progreso/GraficoPeso";
 import { Miniatura } from "@/components/progreso/Miniatura";
+import { RevisionSemanal } from "@/components/semana/RevisionSemanal";
 import { Encabezado, Etiqueta, Tarjeta } from "@/components/ui";
 import { esDemo } from "@/lib/demo";
 import { listarFotos } from "@/lib/datos/fotos";
+import { revisionSemanal } from "@/lib/datos/semana";
 import { marcasPersonales, resumenPeso, ultimosReportes } from "@/lib/datos/progreso";
 import { fechaLarga } from "@/lib/fecha";
 import { fmtDelta, fmtKg } from "@/lib/formato";
@@ -149,6 +151,10 @@ async function Marcas() {
   );
 }
 
+async function Semana() {
+  return <RevisionSemanal r={await revisionSemanal()} />;
+}
+
 async function FotosTarjeta() {
   const todas = await listarFotos();
   const ultimas = (["frente", "perfil", "espalda"] as const).map((p) => todas.findLast((f) => f.pose === p)).filter((f) => f !== undefined);
@@ -188,6 +194,9 @@ export default function ProgresoPage() {
         <div className="flex flex-col gap-3 md:gap-4">
           <Suspense fallback={<Cargando alto="h-96" />}>
             <Peso />
+          </Suspense>
+          <Suspense fallback={<Cargando alto="h-40" />}>
+            <Semana />
           </Suspense>
           <Suspense fallback={<Cargando alto="h-48" />}>
             <Composicion />
