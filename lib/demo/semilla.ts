@@ -109,7 +109,7 @@ export async function regenerarDemo(): Promise<Record<string, number>> {
     noches.push({ id: `demo-${f}`, fecha: f, inicio, fin: new Date(+inicio + (sueno + 25) * 60_000), minutosDormido: sueno, crudo: {} });
   });
 
-  // Peso: de 63 kg hacia una meta de 67 kg, ~0,28 kg por semana, con ruido diario y días sin pesarse.
+  // Peso: de 63 kg hacia una meta de 68 kg, ~0,28 kg por semana, con ruido diario y días sin pesarse.
   const pesos: (typeof pesajes.$inferInsert)[] = [];
   dias.forEach((f, i) => {
     if (i < DIAS - 1 && g.r() < 0.2) return;
@@ -167,14 +167,15 @@ export async function regenerarDemo(): Promise<Record<string, number>> {
 
   // Comidas: un menú de comidas frecuentes y ~2600 kcal por día, con algún día sin registrar.
   const menu = [
-    { nombre: "Avena con banana", kcal: 450, proteinaG: 16 },
-    { nombre: "Tostadas con huevo", kcal: 380, proteinaG: 22 },
-    { nombre: "Pollo con arroz", kcal: 680, proteinaG: 52 },
-    { nombre: "Milanesa con puré", kcal: 760, proteinaG: 45 },
-    { nombre: "Yogur con granola", kcal: 320, proteinaG: 14 },
-    { nombre: "Licuado de proteína", kcal: 290, proteinaG: 32 },
-    { nombre: "Fideos con carne", kcal: 820, proteinaG: 42 },
-    { nombre: "Sándwich de jamón y queso", kcal: 430, proteinaG: 24 },
+    { nombre: "Avena con banana", kcal: 450, proteinaG: 14 },
+    { nombre: "Tostadas con huevo", kcal: 380, proteinaG: 18 },
+    { nombre: "Pollo con arroz", kcal: 680, proteinaG: 40 },
+    { nombre: "Milanesa con puré", kcal: 760, proteinaG: 36 },
+    { nombre: "Yogur con granola", kcal: 320, proteinaG: 12 },
+    { nombre: "Licuado de proteína", kcal: 290, proteinaG: 25 },
+    { nombre: "Fideos con carne", kcal: 820, proteinaG: 32 },
+    { nombre: "Sándwich de jamón y queso", kcal: 430, proteinaG: 20 },
+    { nombre: "Mate con facturas", kcal: 400, proteinaG: 7 },
   ].map((m, i) => ({ id: i + 1, ...m, usos: 0 }));
   const comidas: (typeof registrosComida.$inferInsert)[] = [];
   const registrar = (f: string, hora: number, m: (typeof menu)[number]) => {
@@ -188,6 +189,7 @@ export async function regenerarDemo(): Promise<Record<string, number>> {
     registrar(f, 13, menu[g.entero(2, 3)]);
     if (esHoy) continue;
     registrar(f, 17, menu[g.entero(4, 5)]);
+    if (g.r() < 0.3) registrar(f, 18, menu[8]);
     registrar(f, 21, menu[[2, 3, 6][g.entero(0, 2)]]);
     if (g.r() < 0.5) registrar(f, 23, menu[7]);
   }
@@ -209,7 +211,7 @@ export async function regenerarDemo(): Promise<Record<string, number>> {
   });
 
   const d = db();
-  await d.insert(perfil).values({ id: 1, pesoMetaKg: 67, fechaMeta: sumarDias(hoy, 150), pesoInicialKg: 63, proteinaGPorKg: 1.8 });
+  await d.insert(perfil).values({ id: 1, pesoMetaKg: 68, fechaMeta: sumarDias(hoy, 75), pesoInicialKg: 63, proteinaGPorKg: 1.8 });
   await d.insert(pesajes).values(pesos);
   await d.insert(reportesBalanza).values(reportes);
   await d.insert(metricasDiarias).values(metricas);

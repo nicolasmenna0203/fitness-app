@@ -32,7 +32,7 @@ function estimar(plan: EjercicioPlan[], liviana: boolean): number {
  */
 export function TarjetaProximo({ plan, compacto = false }: { plan: ProximoPlan; compacto?: boolean }) {
   const [liviana, setLiviana] = useState(plan.motivoLiviana !== null);
-  const equipos = [...new Set(plan.ejercicios.map((e) => e.equipo.split(" ")[0]))].slice(0, 3).join(", ");
+  const equipos = [...new Set(plan.ejercicios.map((e) => e.equipo.split(" ")[0].replace(/s$/, "")))].slice(0, 3).join(", ");
 
   if (plan.enCurso) {
     return (
