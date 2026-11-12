@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { IconAlerta, IconCheck } from "@/components/icons";
+import { SubirFoto } from "@/components/progreso/Fotos";
 import { FormMeta, FormPesaje } from "@/components/progreso/Formularios";
 import { GraficoPeso } from "@/components/progreso/GraficoPeso";
+import { Miniatura } from "@/components/progreso/Miniatura";
 import { Encabezado, Etiqueta, Tarjeta } from "@/components/ui";
+import { esDemo } from "@/lib/demo";
+import { listarFotos } from "@/lib/datos/fotos";
 import { marcasPersonales, resumenPeso, ultimosReportes } from "@/lib/datos/progreso";
 import { fechaLarga } from "@/lib/fecha";
 import { fmtDelta, fmtKg } from "@/lib/formato";
@@ -145,6 +149,35 @@ async function Marcas() {
   );
 }
 
+async function FotosTarjeta() {
+  const todas = await listarFotos();
+  const ultimas = (["frente", "perfil", "espalda"] as const).map((p) => todas.findLast((f) => f.pose === p)).filter((f) => f !== undefined);
+  const ultima = todas.at(-1)?.fecha ?? null;
+  return (
+    <Tarjeta etiqueta="Fotos" className="flex flex-col gap-3">
+      <div className="flex items-baseline justify-between gap-3">
+        <Etiqueta>Fotos</Etiqueta>
+        {ultima && <p className="text-[13px] text-ink2">Última: {fechaLarga(ultima)}</p>}
+      </div>
+      {ultimas.length > 0 ? (
+        <div className="grid grid-cols-3 gap-2">
+          {ultimas.map((f) => (
+            <Miniatura key={f.id} foto={f} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-[15px] text-ink2">Una foto cada 2 a 4 semanas alcanza para ver el cambio que la balanza no muestra.</p>
+      )}
+      <SubirFoto deshabilitado={esDemo} />
+      {todas.length > 0 && (
+        <Link href="/progreso/fotos" className="flex h-11 items-center justify-center rounded-xl text-[15px] font-semibold text-link">
+          Ver todas y comparar
+        </Link>
+      )}
+    </Tarjeta>
+  );
+}
+
 const Cargando = ({ alto }: { alto: string }) => <Tarjeta className={`animate-pulse ${alto}`}>{null}</Tarjeta>;
 
 export default function ProgresoPage() {
@@ -163,6 +196,9 @@ export default function ProgresoPage() {
         <div className="flex flex-col gap-3 md:gap-4">
           <Suspense fallback={<Cargando alto="h-40" />}>
             <MetaTarjeta />
+          </Suspense>
+          <Suspense fallback={<Cargando alto="h-40" />}>
+            <FotosTarjeta />
           </Suspense>
           <Suspense fallback={<Cargando alto="h-40" />}>
             <Marcas />

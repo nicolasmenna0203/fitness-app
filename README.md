@@ -43,7 +43,7 @@ Detalle en [docs/producto/](docs/producto/).
 - Web app instalable (manifiesto e íconos generados por Next)
 - **Postgres en Neon** con **Drizzle ORM**, base y funciones en São Paulo ([ADR 0009](docs/decisiones/0009-drizzle-y-neon-en-sao-paulo.md))
 - **Google Health API** para los datos de la pulsera, con sincronización al abrir la app y cron diario ([ADR 0002](docs/decisiones/0002-fitbit-via-google-health-api-y-takeout.md))
-- Previsto: Vercel Blob para fotos y capturas de la balanza
+- Fotos de progreso comprimidas en el dispositivo y guardadas en Neon ([ADR 0011](docs/decisiones/0011-fotos-de-progreso-en-la-base.md))
 
 ## Desarrollo local
 

@@ -6,7 +6,7 @@ con las alternativas que se evaluaron y descartaron, y los límites que arrastra
 Antes de cambiar una fuente de datos, un criterio de entrenamiento o la lógica
 de calorías: buscá el ADR acá. Ver [PLANTILLA.md](PLANTILLA.md) para el flujo.
 
-**Próximo número: 0011**
+**Próximo número: 0012**
 
 ## Plataforma y repo
 
@@ -24,6 +24,7 @@ de calorías: buscá el ADR acá. Ver [PLANTILLA.md](PLANTILLA.md) para el flujo
 |---|---|---|
 | [0002](0002-fitbit-via-google-health-api-y-takeout.md) | Fitbit vía Google Health API como app personal sin verificar; Takeout para historial | Propuesta |
 | [0010](0010-lector-de-reportes-con-ocr-en-el-dispositivo.md) | Leer los reportes de la balanza con OCR en el dispositivo, por posición | Aceptada |
+| [0011](0011-fotos-de-progreso-en-la-base.md) | Fotos de progreso comprimidas en el dispositivo y guardadas en la base | Aceptada |
 
 ## Entrenamiento y nutrición
 

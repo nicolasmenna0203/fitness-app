@@ -234,6 +234,28 @@ export const reportesBalanza = pgTable(
   (t) => [index("reportes_balanza_fecha_idx").on(t.fecha)],
 );
 
+export const POSES = ["frente", "perfil", "espalda"] as const;
+export type Pose = (typeof POSES)[number];
+
+/**
+ * Fotos de progreso (ADR 0011): comprimidas en el dispositivo, en base64. Las
+ * consultas que listan fotos no deben traer `datos`.
+ */
+export const fotos = pgTable(
+  "fotos",
+  {
+    id: serial().primaryKey(),
+    fecha: date().notNull(),
+    pose: text({ enum: POSES }).notNull(),
+    mime: text().notNull(),
+    ancho: smallint().notNull(),
+    alto: smallint().notNull(),
+    datos: text().notNull(),
+    creada: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("fotos_fecha_idx").on(t.fecha)],
+);
+
 // ─── Nutrición (ADR 0005) ────────────────────────────────────────────────────
 
 /** Comidas que se repiten: se registran en un toque. */

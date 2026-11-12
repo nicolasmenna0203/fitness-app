@@ -31,7 +31,9 @@ comercial.
 - **Next.js en Vercel**, plan Hobby (gratuito, uso personal no comercial).
 - **Postgres en Neon**, conectado desde Vercel. Plan gratuito.
 - **Archivos privados** (fotos de progreso, capturas de la balanza) en Vercel
-  Blob, sin URLs públicas.
+  Blob, sin URLs públicas. *Actualizado: las fotos van en la base
+  ([ADR 0011](0011-fotos-de-progreso-en-la-base.md)) y las capturas no se
+  guardan ([ADR 0010](0010-lector-de-reportes-con-ocr-en-el-dispositivo.md)).*
 - **Login de un solo usuario** con cookie de sesión firmada y middleware, sin
   proveedor de identidad externo.
 - **Sincronización con la Google Health API:** al abrir la app y con un respaldo
