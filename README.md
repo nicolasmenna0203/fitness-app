@@ -116,6 +116,8 @@ scripts/          prueba de la Google Health API
 
 ## Demo
 
+**[fitness-app-demo-nu.vercel.app](https://fitness-app-demo-nu.vercel.app)**
+
 Un segundo proyecto de Vercel despliega este mismo repo con `DEMO=1`: sin
 login, sin conexión con Google y sin subida de fotos, sobre una base propia
 con datos inventados. El cron diario, en vez de sincronizar, borra la base y
