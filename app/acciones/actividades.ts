@@ -18,7 +18,8 @@ export async function registrarActividad(tipo: string, minutos: number, ayer: bo
 
   const fin = new Date(Date.now() - (ayer ? 24 * 3600_000 : 0));
   const inicio = new Date(fin.getTime() - minutos * 60_000);
-  const peso = (await calcularResumenPeso()).actual ?? 70;
+  // Sin pesajes, un peso de referencia genérico.
+  const peso = (await calcularResumenPeso()).actual ?? 75;
   const kcal = kcalEstimadas(deporte.met, peso, minutos);
   await db().insert(actividades).values({ origen: "manual", tipo, nombre: deporte.nombre, fecha: fechaLocal(fin), inicio, fin, kcal });
   refresh();

@@ -5,8 +5,8 @@ const act = (origen: "google" | "manual", fecha: string, tipo: string, minutos: 
 
 describe("actividades", () => {
   it("estima las calorías activas restando el reposo", () => {
-    // (7 − 1) × 70 kg × 1 h = 420
-    expect(kcalEstimadas(7, 70, 60)).toBe(420);
+    // (7 − 1) × 75 kg × 1 h = 450
+    expect(kcalEstimadas(7, 75, 60)).toBe(450);
     expect(kcalEstimadas(6, 65, 90)).toBe(490);
   });
 
