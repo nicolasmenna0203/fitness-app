@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { esDemo } from "@/lib/demo";
 import { SESION_COOKIE, verificarToken } from "@/lib/sesion";
 
 /**
@@ -8,6 +9,12 @@ import { SESION_COOKIE, verificarToken } from "@/lib/sesion";
  */
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  // Demo pública (DEMO=1): sin login ni conexión con Google; todo lo demás, abierto.
+  if (esDemo) {
+    if (pathname === "/login") return NextResponse.redirect(new URL("/", req.url));
+    if (pathname.startsWith("/api/google/")) return new NextResponse("No disponible en la demo", { status: 404 });
+    return NextResponse.next();
+  }
   if (pathname === "/login") return NextResponse.next();
   // El cron de Vercel no tiene cookie: la ruta se autentica sola con CRON_SECRET.
   if (pathname.startsWith("/api/cron/")) return NextResponse.next();

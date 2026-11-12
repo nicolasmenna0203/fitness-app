@@ -1,6 +1,8 @@
 import { timingSafeEqual } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { ajustarMetaSiCorresponde } from "@/lib/datos/comer";
+import { esDemo } from "@/lib/demo";
+import { regenerarDemo } from "@/lib/demo/semilla";
 import { sincronizarGoogle } from "@/lib/google/sync";
 
 /**
@@ -14,6 +16,9 @@ export async function GET(req: NextRequest) {
   const esperado = `Bearer ${secreto}`;
   const ok = !!secreto && recibido.length === esperado.length && timingSafeEqual(Buffer.from(recibido), Buffer.from(esperado));
   if (!ok) return new Response("No autorizado", { status: 401 });
+
+  // En la demo, el cron diario regenera los datos sintéticos en vez de sincronizar.
+  if (esDemo) return Response.json({ demo: await regenerarDemo() });
 
   const r = await sincronizarGoogle(3);
   const ajuste = await ajustarMetaSiCorresponde().catch((e) => `error: ${e instanceof Error ? e.message : e}`);

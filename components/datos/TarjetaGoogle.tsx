@@ -5,6 +5,7 @@ import { IconAlerta, IconCheck } from "@/components/icons";
 import { Etiqueta, Tarjeta } from "@/components/ui";
 import { db } from "@/db";
 import { conexionGoogle } from "@/db/schema";
+import { esDemo } from "@/lib/demo";
 
 function haceCuanto(d: Date): string {
   const min = Math.round((Date.now() - d.getTime()) / 60000);
@@ -17,6 +18,17 @@ function haceCuanto(d: Date): string {
 /** Estado de la conexión con Google Health (pulsera Fitbit). */
 export async function TarjetaGoogle() {
   await connection(); // estado de la base y "hace X min": siempre al momento del pedido
+  if (esDemo) {
+    return (
+      <Tarjeta etiqueta="Google Health" className="flex flex-col gap-2">
+        <Etiqueta>Pulsera · Google Health</Etiqueta>
+        <p className="text-[15px] text-ink2">
+          En la app real, el sueño, la frecuencia cardíaca, los pasos y los ejercicios llegan de una pulsera Fitbit por la Google Health API, al abrir la
+          app y una vez por día. En la demo son datos inventados.
+        </p>
+      </Tarjeta>
+    );
+  }
   const [c] = await db()
     .select({ ultimaSync: conexionGoogle.ultimaSync, ultimoError: conexionGoogle.ultimoError, conectadoEn: conexionGoogle.conectadoEn })
     .from(conexionGoogle)
